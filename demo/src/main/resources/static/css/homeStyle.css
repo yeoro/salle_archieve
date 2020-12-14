@@ -1,0 +1,121 @@
+
+*{
+	box-sizing: border-box;
+	font-size: 11px;
+}
+
+a {
+	text-decoration: none;
+}
+
+li {
+	list-style: none;	
+}
+
+ul {
+	line-height: 25px;
+	font-size: 10px;
+}
+
+.container {
+	display: flex;
+	margin-top: 20px;
+}
+
+.logo {
+	margin-left: 30px;
+}
+
+.sell {
+	margin-left: 30px;
+	margin-top: 5px;
+}
+
+.shopinfo {
+	margin-left: 30px;
+	margin-top: 5px;
+}
+
+.member {
+	margin-left: 30px;
+	margin-top: 5px;
+}
+
+input[id="categoryicon"] {
+	display:none;
+}
+
+input[id="categoryicon"] + label {
+	display:block;
+	width:30px;
+	height:25px;
+	position:relative;
+	cursor:pointer;
+}
+
+input[id="categoryicon"] + label span {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    border-radius: 10px;
+    background: #000;
+    transition: all .35s;
+}
+
+input[id="categoryicon"] + label span:nth-child(1) {
+	top:0;
+}
+
+input[id="categoryicon"] + label span:nth-child(2) {
+	top:50%;
+	transform:translateY(-50%);
+}
+
+
+input[id="categoryicon"] + label span:nth-child(3) {
+	bottom:0;
+}
+
+input[id="categoryicon"]:checked + label {
+	z-index:2;
+}
+
+input[id="categoryicon"]:checked + label span:nth-child(1) {
+	top:50%;
+	transform:translateY(-50%) rotate(45deg);
+}
+
+input[id="categoryicon"]:checked + label span:nth-child(2) {
+	opacity:0; /*make it transparent*/
+}
+
+
+input[id="categoryicon"]:checked + label span:nth-child(3) {
+	bottom:50%;
+	transform:translateY(50%) rotate(-45deg);
+}
+
+
+div[class="hamburgerbar"] {
+	width: 200px;
+	height: 100%;
+	padding-top: 60px;
+	padding-left: 35px;
+	background-color: rgb(153, 204, 255,0.3);
+	position: fixed; /*스크롤해도 고정시켜줌*/
+	top: 0;
+	left: -300px;
+	z-index: 1; /*우선순위 0순위는 버튼*/
+	transition: all .35s; /*변화값에 따라 모션*/
+}
+
+input[id="categoryicon"]:checked+label+div {
+	left: 0;
+}
+
+input[id="searchbar"] {
+	margin-left: 50px;
+	margin-top: 5px;
+}
+
