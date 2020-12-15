@@ -41,6 +41,11 @@ ul {
 	margin-top: 5px;
 }
 
+.memberpostlogin {
+	margin-left: 30px;
+	margin-top: 5px;
+}
+
 input[id="categoryicon"] {
 	display:none;
 }
@@ -110,6 +115,14 @@ div[class="hamburgerbar"] {
 	transition: all .35s; /*변화값에 따라 모션*/
 }
 
+.loginmenu > a {
+	cursor:pointer;
+}
+
+.loginmenu .hide {
+	display:none;
+}
+
 input[id="categoryicon"]:checked+label+div {
 	left: 0;
 }
@@ -117,5 +130,15 @@ input[id="categoryicon"]:checked+label+div {
 input[id="searchbar"] {
 	margin-left: 50px;
 	margin-top: 5px;
+}
+
+#link_logininfo {
+	border:none;
+	background-color: transparent;
+	cursor: pointer;
+}
+
+#link_logintoggle {
+	display: none;
 }
 
