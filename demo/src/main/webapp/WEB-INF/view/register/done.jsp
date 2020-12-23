@@ -10,5 +10,6 @@
 </head>
 <body>
     <h2>회원가입이 완료되셨습니다 :) </h2>
+    <a href="<c:url value="/home"/>">main</a>
 </body>
 </html>

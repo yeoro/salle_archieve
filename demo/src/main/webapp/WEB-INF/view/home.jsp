@@ -6,7 +6,7 @@
 <html>
 <head>
 <!-- CSS -->
-<link rel="stylesheet" href="/resources/css/homeStyle.css">
+<link rel="stylesheet" href="/resources/css/home.css">
 <!-- jQuery -->
 <!-- <script src="jquery-3.5.1.js"></script> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -60,7 +60,7 @@
 				maxlength="50" size="60">	
 		</div>
 		<div class="sell">
-			<a href="<c:url value=""/>"> 
+			<a href="<c:url value="/sellproduct"/>"> 
 				판매하기
 			</a>
 		</div>

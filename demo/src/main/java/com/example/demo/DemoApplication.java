@@ -1,12 +1,16 @@
 package com.example.demo;
 
+import java.util.Locale;
+
 import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.ResourceBundleMessageSource;
 
 @SpringBootApplication
 public class DemoApplication {
@@ -30,6 +34,17 @@ public class DemoApplication {
 		//Member 클래스 경로
 		sessionFactoryBean.setTypeAliasesPackage("com.example.demo.domain");
 		return sessionFactoryBean.getObject();
+	}
+	
+	@Bean
+	public MessageSource messageSource() {
+		Locale.setDefault(Locale.KOREA);
+		ResourceBundleMessageSource bundleMessageSource =
+				new ResourceBundleMessageSource();
+
+		bundleMessageSource.setBasename("/resources/message/messagesource");
+		bundleMessageSource.setDefaultEncoding("UTF-8");
+		return bundleMessageSource;
 	}
 
 }
