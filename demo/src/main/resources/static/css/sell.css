@@ -1,0 +1,19 @@
+
+*{
+	box-sizing: border-box;
+	font-size: 11px;
+}
+
+.select_img {
+	width: 100px;
+	height: 100px;
+}
+
+#pr_detail {
+	
+	resize: none;
+	width: 500px;
+	height: 200px;
+}
+
+

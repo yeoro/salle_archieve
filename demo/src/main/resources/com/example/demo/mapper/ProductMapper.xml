@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.example.demo.mapper.ProductMapper">
+
+    <!-- Product SQL-->
+    <!-- parameterType: 구문에 전달될 파라미터의 패키지 경로를 포함한 전체 클래스명이나 별칭-->
+    <insert id="registerProduct" parameterType="Product">
+        INSERT INTO
+        product
+        VALUES(#{email}, #{pr_reg_date}, #{pr_img}, #{pr_title}, #{pr_category}, #{pr_region}, #{pr_quality}, #{pr_price}, #{pr_detail});
+    </insert>
+    
+    <!-- parsedatetime(#{pr_reg_date}, "yyyy/MM/DD hh:mm:ss") -->
+
+    <!-- <select iD="getCountProduct">
+        SELECT COUNT(*)
+        FROM product;
+    </select>
+
+    <delete id="deleteProduct">
+        DELETE
+        FROM product;
+    </delete>  -->
+</mapper>
