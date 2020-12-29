@@ -10,7 +10,7 @@
     <insert id="registerProduct" parameterType="Product">
         INSERT INTO
         product
-        VALUES(#{email}, #{pr_reg_date}, #{pr_img}, #{pr_title}, #{pr_category}, #{pr_region}, #{pr_quality}, #{pr_price}, #{pr_detail});
+        VALUES(#{email}, #{pr_reg_date}, #{pr_img_1}, #{pr_title}, #{pr_category}, #{pr_region}, #{pr_quality}, #{pr_price}, #{pr_detail}, #{pr_img_2}, #{pr_img_3}, #{pr_img_4}, #{pr_img_5});
     </insert>
     
     <!-- parsedatetime(#{pr_reg_date}, "yyyy/MM/DD hh:mm:ss") -->

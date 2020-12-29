@@ -1,4 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
@@ -65,7 +66,7 @@
 			</a>
 		</div>
 		<div class="shopinfo">
-			<a href="<c:url value=""/>"> 
+			<a href="<c:url value="/mystore"/>"> 
 				내상점
 			</a>
 		</div>
@@ -89,7 +90,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="/login">
+						<a href="/mystore">
 							내상점
 						</a>
 					</li>					
