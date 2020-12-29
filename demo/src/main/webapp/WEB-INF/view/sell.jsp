@@ -112,7 +112,6 @@
     <script>
     
     var img_count = 1;
-    var list = new Array();
     var formData = new FormData();
 	    
     //pr_img
