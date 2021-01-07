@@ -170,7 +170,12 @@
 		    <version>2.4</version>
 		</dependency>
 		
-		
+		<!-- validation -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-validation</artifactId>
+		    <version>2.3.4.RELEASE</version>
+		</dependency>
 
 	</dependencies>
 

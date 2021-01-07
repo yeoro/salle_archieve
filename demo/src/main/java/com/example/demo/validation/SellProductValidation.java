@@ -10,7 +10,7 @@ public class SellProductValidation implements Validator{
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return SellProductValidation.class.isAssignableFrom(clazz);
+		return Product.class.isAssignableFrom(clazz);
 	}
 
 	@Override
@@ -20,9 +20,12 @@ public class SellProductValidation implements Validator{
 		
 		Product product = (Product) target;
 		
+		if (product.getPr_img_1() == null) {
+			errors.rejectValue("pr_img_1", "required");
+		}
+		
 		//어떤 정보가 비어있을 경우
         ValidationUtils.rejectIfEmptyOrWhitespace(errors,"pr_title", "required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"pr_category", "required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors,"pr_region", "required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors,"pr_quality", "required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors,"pr_price", "required");

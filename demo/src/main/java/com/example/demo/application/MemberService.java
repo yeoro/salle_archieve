@@ -2,13 +2,11 @@ package com.example.demo.application;
 
 import javax.transaction.Transactional;
 
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.domain.Login;
 import com.example.demo.domain.Member;
-import com.example.demo.exception.AlreadyExistMember;
 import com.example.demo.exception.IncorrectPasswordException;
 import com.example.demo.exception.UnregisteredMemberException;
 import com.example.demo.mapper.MemberMapper;
@@ -20,43 +18,38 @@ public class MemberService implements MemberMapper {
     @Autowired
     MemberMapper memberMapper;
 
-    private SqlSession sqlSession;
-    private String namespace = "com.example.demo.mapper.MemberMapper";
-
     @Override
     public void insertMember(Member member) {
-
-        if (memberMapper.memberInfo(member.getEmail()) != null) {
-            throw new AlreadyExistMember();
-        }
+    	
         memberMapper.insertMember(member);
     }
 
     @Override
     public Member memberInfo(String email) {
 
-        return sqlSession.selectOne(namespace, memberMapper.memberInfo(email));
+        return memberMapper.memberInfo(email);
     }
 
 
-    public Member loginMember(Member member) {
+    public Login loginMember(Login login) {
 
-        Member memberInfo = memberMapper.memberInfo(member.getEmail());
+        Member memberInfo = memberMapper.memberInfo(login.getEmail());
                 
         if (memberInfo == null) {
             throw new UnregisteredMemberException();
         } else {
-            if (memberInfo.getPassword().equals(member.getPassword())) {
+            if (memberInfo.getPassword().equals(login.getPassword())) {
             } else {
                 throw new IncorrectPasswordException();
             }
         }
         
+        login.setNickName(memberInfo.getNickName()); 
+        
         //TODO: 이메일 기억하기, 로그인 유지 구현
 //        Cookie
 
-
-        return memberInfo;
+        return login;
     }
 
 }

@@ -2,57 +2,56 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!DOCTYPE html>
 <html>
 <head>
     <title>회원가입</title>
+    <link rel="stylesheet" href="/resources/css/register_main.css">
 </head>
 <body>
-    <form:form action="done" modelAttribute="member" method="post">
-    <p>
-        <label>
-        이메일:
-        <form:input path="email"/>
-        </label>
-    </p>
 
-    <p>
-        <label>
-        비밀번호:
-        <form:password path="password"/>
-        </label>
-    </p>
-
-    <p>
-        <label>
-        비밀번호 확인:
-        <form:password path="confirmPassword"/>
-        </label>
-    </p>
-
-    <p>
-        <label>
-        이름:
-        <form:input path="name"/>
-        </label>
-    </p>
-
-    <p>
-        <label>
-        닉네임:
-        <form:input path="nickName"/>
-        </label>
-    </p>
-
-    <p>
-        <label>
-        휴대전화:
-        <form:input path="phoneNum"/>
-        </label>
-    </p>
-
-    <input type="submit" value="가입하기">
+    <div class="container">
+    	<div class="header">
+    		<h2>회원가입</h2>
+    	</div>
+	    <form:form class="form" action="done" method="post" modelAttribute="member">
+    	<div class="register_info">
+	        <label>이메일</label>
+	        <form:input type="text" path="email"/>
+	        <form:errors class="errors" path="email"/>	       
+	    </div>
+		<div class="register_info">
+	        <label>비밀번호</label>
+	        <form:input type="password" path="password"/>
+	        <form:errors class="errors" path="password"/>
+		</div>
+		<div class="register_info">
+	        <label>비밀번호 확인</label>
+	        <form:input type="password" path="confirmPassword"/>
+	        <form:errors class="errors" path="confirmPassword"/>
+	        
+		</div>
+		<div class="register_info">
+	        <label>이름</label>
+	        <form:input type="text" path="name" />
+	        <form:errors class="errors" path="name"/>
+		</div>
+		<div class="register_info">
+	        <label>닉네임</label>
+	        <form:input type="text" path="nickName" />    
+	        <form:errors class="errors" path="nickName"/>
+		</div>
+		
+		<div class="register_info">
+	        <label>휴대전화</label>
+	        <input type="text" name="phoneNum" />
+	        <form:errors class="errors" path="phoneNum"/>
+    	</div>
+    <input class="submit" type="submit" value="가입하기">
     </form:form>
+	</div>
 </body>
 </html>

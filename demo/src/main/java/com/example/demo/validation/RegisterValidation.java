@@ -3,15 +3,21 @@ package com.example.demo.validation;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import com.example.demo.application.MemberService;
 import com.example.demo.domain.Member;
+import com.example.demo.exception.AlreadyExistMember;
+import com.example.demo.mapper.MemberMapper;
 import com.example.demo.validation.RegisterValidation;
 
 public class RegisterValidation implements Validator {
+	
+
 	
 	   private static final String EMAIL_REG_EXP =
 	            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9]+)*@" +
@@ -25,7 +31,7 @@ public class RegisterValidation implements Validator {
 
 	    @Override
 	    public boolean supports(Class<?> aClass) {
-	        return RegisterValidation.class.isAssignableFrom(aClass);
+	        return Member.class.isAssignableFrom(aClass);
 	    }
 
 	    @Override
@@ -43,9 +49,14 @@ public class RegisterValidation implements Validator {
 	                errors.rejectValue("email", "incorrectFormat");
 	            }
 	        }
+	        
+	        if (member.isEmailDuplicate()) {
+	        	errors.rejectValue("email", "duplicate");
+	        }
+	        
 
 	        //입력값이 비었을 때
-	        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"password", "required");
+	        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"password","required");
 	        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"confirmPassword", "required");
 	        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"name", "required");
 	        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"nickName", "required");
@@ -55,6 +66,7 @@ public class RegisterValidation implements Validator {
 	        if (!member.getConfirmPassword().equals(member.getPassword())) {
 	            errors.rejectValue("confirmPassword", "unmatch");
 	        }
+	        
 	    }
 
 }

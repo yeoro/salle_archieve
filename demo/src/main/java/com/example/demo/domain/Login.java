@@ -12,5 +12,6 @@ public @Data class Login {
     private String password;
     private boolean autoLogin;
     private boolean rememberEmail;
+    private String nickName;
 
 }

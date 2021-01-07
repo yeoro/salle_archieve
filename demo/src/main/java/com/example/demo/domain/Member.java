@@ -15,5 +15,5 @@ public @Data class Member {
     private String nickName;
     private String password;
     private String confirmPassword;
-
+    private boolean emailDuplicate;
 }

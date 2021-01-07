@@ -2,8 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <!-- .jsp <head> 통일시켜주기 위해서 주석처리(12/29)
@@ -19,8 +20,10 @@
 </head>
 <body>
 
+	<%@include file="../home.jsp" %>
 
-    <form:form id="frm" action="sellproduct/done" method="post" enctype="multipart/form-data">
+
+    <form:form action="done" method="post" enctype="multipart/form-data" modelAttribute="product">
     
     <section class="pr_img">
   		<p>	
@@ -32,12 +35,14 @@
     	</div>
 	    <%=request.getRealPath("/") %>
 	    <input id="upload" type="button" value="업로드" onclick="fileUpload()"/>
+	    <form:errors id="errors" path="pr_img_1"/>
     </section>
     
     <section class="pr_title">
 	    <p>
 	    	<h2>제목</h2>
-	   		<input type="text" name="pr_title" size="50">
+	   		<form:input type="text" name="pr_title" size="50" path="pr_title"/>
+	   		<form:errors id="errors" path="pr_title"/>
 	    </p>
     </section>
 
@@ -45,10 +50,20 @@
 	    <p>
 	    	<h2>상품 카테고리</h2>
 		    <select id="pr_category" name="pr_category" required>
-		    	<option value="디지털/가전">디지털/가전</option>
-		    	<option value="가구/인테리어">가구/인테리어</option>
-		    	<option value="유아동/유아도서">유아동/유아도서</option>
-		    	<option value="디지털/가전">디지털/가전</option>
+		    	<option value="digital"><spring:message code="digital"/></option>
+		    	<option value="furniture"><spring:message code="furniture"/></option>
+		    	<option value="kids"><spring:message code="kids"/></option>
+		    	<option value="lifestyle"><spring:message code="lifestyle"/></option>
+		    	<option value="sports"><spring:message code="sports"/></option>
+		    	<option value="womengoods"><spring:message code="womengoods"/></option>
+		    	<option value="womenclothes"><spring:message code="womenclothes"/></option>
+		    	<option value="menclothes"><spring:message code="menclothes"/></option>
+		    	<option value="games"><spring:message code="games"/></option>
+		    	<option value="beauty"><spring:message code="beauty"/></option>
+		    	<option value="pets"><spring:message code="pets"/></option>
+		    	<option value="books"><spring:message code="books"/></option>
+		    	<option value="plants"><spring:message code="plants"/></option>
+		    	<option value="etc"><spring:message code="etc"/></option>
 			</select>
 	    </p>
     </section>
@@ -64,7 +79,9 @@
 		    </p>
 					우편번호<input type="text" id="zipNo" name="zipNo" /><br>
 				    전체주소 <input type="text" id="roadFullAddr" name="roadFullAddr" /><br>
-				    도로명주소 <input type="text" id="roadAddrPart1" name="pr_region" /><br>
+				    도로명주소 <form:input type="text" id="roadAddrPart1" name="pr_region" path="pr_region"/>
+				    <form:errors id="errors" path="pr_region"/>
+				    <br>
 					상세주소<input type="text" id="addrDetail" name="addrDetail" /><br> 
 					참고주소<input type="text" id="roadAddrPart2" name="roadAddrPart2" /><br>
 				<!--</form> -->
@@ -76,31 +93,35 @@
 	    	<p>
 		    	<h2>상품 상태</h2>
 		    </p>	    	
-	    		<input type="radio" id="pr_quality" name="pr_quality" value="상"/>
+	    		<input type="radio" id="pr_quality" name="pr_quality" value="상" />
 	    		<label for="pr_quality">상</label>
 	    	
 	    
-	    		<input type="radio" id="pr_quality" name="pr_quality" value="중"/>
+	    		<input type="radio" id="pr_quality" name="pr_quality" value="중" />
 	    		<label for="pr_quality">중</label>
 	    	
 	    	
-	    		<input type="radio" id="pr_quality" name="pr_quality" value="하"/>
+	    		<input type="radio" id="pr_quality" name="pr_quality" value="하" />
 	    		<label for="pr_quality">하</label>
+			    <form:errors id="errors" path="pr_quality"/>
     	</p>
     </section>
     
     <section class="pr_price">
 	    <p>
 	    	<h2>상품 가격</h2>
-	   		<input type="text" id="pr_price_view" onkeyup="priceCommas(this.value)" name="pr_price_view"/>원
-	   		<input type="hidden" id="pr_price" name="pr_price"/>
+	   		<form:input type="text" id="pr_price" onkeyup="priceCommas(this.value)" name="pr_price" path="pr_price"/>원
+		    <form:errors id="errors" path="pr_price"/>
 	    </p>
     </section>
 
     <section class="pr_detail">
 	    <p>
+	    <label>
 	    	<h2>상품 설명</h2>
-	   		<textarea id="pr_detail" placeholder="상품 설명을 입력하세요. 최대 500자" maxlength="1000" name="pr_detail"></textarea>
+	   		<textarea id="pr_detail" placeholder="상품 설명을 입력하세요. 최대 500자" maxlength="1000" rows="10" cols="80" name="pr_detail"></textarea>
+		    <form:errors id="errors" path="pr_detail"/>
+		</label>
 	    </p>
     </section>
     
@@ -154,7 +175,7 @@
 	function fileUpload() {
 		
 		$.ajax({
-    		url:"/sellproduct/ajax",
+    		url:"/sell/ajax",
    			type: 'POST',
     		data: formData,
     			processData: false,
@@ -174,17 +195,15 @@
 	    	x = x.replace(/[^0-9]/ig,'');
 	    	x = x.replace(/,/ig,'');
 	    	
-	    	nonCommaX= parseInt(x);
 	    	commaX = x.replace(/\B(?=(\d{3})+(?!\d))/g,',');
 	    	
-	    	$('#pr_price_view').val(commaX);
-	    	$('#pr_price').val(nonCommaX);
+	    	$('#pr_price').val(commaX);
 	    }
 
 	//pr_region
 	function goPopup() {
 			
-			var pop = window.open("/sell_region","pop","width=570, height=420, scrollbars=yes, resizable=yes");
+			var pop = window.open("/sell/region","pop","width=570, height=420, scrollbars=yes, resizable=yes");
 		} 	
 		//주소입력창
 		function jusoCallBack(roadFullAddr,roadAddrPart1,addrDetail,roadAddrPart2, zipNo){ 

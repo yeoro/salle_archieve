@@ -2,14 +2,20 @@ package com.example.demo.application;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.Date;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.apache.ibatis.session.SqlSession;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.domain.Member;
 import com.example.demo.domain.Product;
 import com.example.demo.mapper.ProductMapper;
 
@@ -19,9 +25,12 @@ public class ProductService implements ProductMapper {
 	
     @Autowired
     ProductMapper productMapper;
-    
+        
     private String namespace = "com.example.demo.mapper.ProductMapper";
 
+    Timestamp tsSeller;
+    Timestamp tsClient;
+    
 	@Override
 	public void registerProduct(Product product) {
 		
@@ -29,9 +38,9 @@ public class ProductService implements ProductMapper {
 		
 		//A date-time without a time-zone in the ISO-8601 calendar system,such as 2007-12-03T10:15:30.
 		//2020-12-21 13:10:52.467 요런 형식임
-        Timestamp ts = Timestamp.valueOf(LocalDateTime.now());
+        tsSeller = Timestamp.valueOf(LocalDateTime.now());
         
-        product.setPr_reg_date(ts);
+        product.setPr_reg_date(tsSeller);
 
         //Format을 내가 원하는대로 맞춰주기 위해 SimpleDateFormat을 활용해야하고 그래서 Date 객체를 써야함.
         //h2-consle의 parsedatetime을 쓸거기 때문에 아래 parsing은 생략해도 됨
@@ -56,5 +65,40 @@ public class ProductService implements ProductMapper {
 	public void deleteProduct() {
 		productMapper.deleteProduct();
 	}
+
+	@Override
+	public List<Product> getProductList() {
+		
+		return productMapper.getProductList();
+	}
+
+	@Override
+	public List<Product> getCategoryProductList(String pr_category) {
+
+		return productMapper.getCategoryProductList(pr_category);
+	}
+
+	@Override
+	public Product getProductInfo(int pr_id) {
+		
+		Product productInfo = productMapper.getProductInfo(pr_id);
+		
+		return productInfo;
+	}
+
+	@Override
+	public String getMemberProductInfo(String email) {
+		
+		return productMapper.getMemberProductInfo(email);
+	}
+
+	@Override
+	public List<Product> search(String searchWord) {
+
+		return productMapper.search(searchWord);
+	}
+
+
+
 
 }

@@ -12,7 +12,7 @@ public class LogoutController {
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logoutHandle(HttpSession httpSession) {
 
-    	httpSession.removeAttribute("member");
+    	httpSession.removeAttribute("login");
 
         return "redirect:/";
     }

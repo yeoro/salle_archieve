@@ -4,16 +4,12 @@
 	font-size: 11px;
 }
 
-.select_img {
-	width: 100px;
-	height: 100px;
+textarea {
+	resize: none;	
 }
 
-#pr_detail {
-	
-	resize: none;
-	width: 500px;
-	height: 200px;
+#errors {
+	color: red;
 }
 
 

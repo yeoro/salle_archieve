@@ -11,5 +11,4 @@ public interface MemberMapper {
 
     Member memberInfo(String email);
 
-
 }

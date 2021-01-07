@@ -12,11 +12,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.example.demo.domain.Login;
-import com.example.demo.domain.Sessions;
 
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 	
-	private static final String login = "member";
+	private static final String login = "login";
 	//사용자 상호작용 logger에 LoginInterceptor 클래스를 저장
 	private static final Logger logger = LoggerFactory.getLogger(LoginInterceptor.class);
 	
@@ -41,11 +40,11 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
     	HttpSession session = request.getSession(true);
     	ModelMap modelMap = modelAndView.getModelMap();
-    	Object member = modelMap.get(login);
+    	Object loginInter = modelMap.get("login");
     	
-    	if (member != null) {
+    	if (loginInter != null) {
     		logger.info("새로운 로그인 성공");
-    		session.setAttribute(login, member);
+    		session.setAttribute("loginInter", loginInter);
     	}
     }
 
