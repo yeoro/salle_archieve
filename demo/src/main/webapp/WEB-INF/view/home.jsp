@@ -62,7 +62,7 @@
 				</a>
 				</h1>
 				
-				<form action="/search/result">
+				<form action="/search/result" method="GET">
 				<input type="text" id="searchWord" name="searchWord" placeholder="검색어를 입력하세요"
 					maxlength="50" size="60">
 				<!-- <input id="searchButton" type="image" src="" style="width:25px; height:25px;" alt="Submit Form"/> -->

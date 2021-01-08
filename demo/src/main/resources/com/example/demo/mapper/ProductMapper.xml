@@ -52,8 +52,8 @@
 	    LIMIT 1;
     </select>
     <select id="search" resultType="Product">
+    	<bind name="searchWordConcate" value="'%'+searchWord+'%'"></bind>
     	SELECT *
-    	FROM PRODUCT
-    	WHERE PR_TITLE LIKE '%#{searchWord}%'
+    	FROM FT_SEARCH_DATA('귀를',0,0)
     </select>
 </mapper>

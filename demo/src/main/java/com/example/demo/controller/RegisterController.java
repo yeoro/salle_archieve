@@ -37,7 +37,7 @@ public class RegisterController {
 	    		if (memberService.memberInfo(member.getEmail()) != null) {
 	    			member.setEmailDuplicate(true);
 	    		}
-	    	
+	    
 	    		new RegisterValidation().validate(member, errors);
 	    		
 	    		if (errors.hasErrors()) {

@@ -78,6 +78,7 @@ public class ProductInfoController {
 	@RequestMapping(value = "/search/result", method = RequestMethod.GET) 
 	public String searchGet(@RequestParam("searchWord") String searchWord, Model model) {
 		
+		//String searchWord = searchWordRaw.replaceAll("\\s", "");
 		model.addAttribute("searchProductList", productService.search(searchWord));
 		return "product/searchResult";
 	}
