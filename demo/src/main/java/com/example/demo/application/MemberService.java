@@ -45,9 +45,6 @@ public class MemberService implements MemberMapper {
         }
         
         login.setNickName(memberInfo.getNickName()); 
-        
-        //TODO: 이메일 기억하기, 로그인 유지 구현
-//        Cookie
 
         return login;
     }

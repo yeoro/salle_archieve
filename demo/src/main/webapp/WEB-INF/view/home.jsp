@@ -79,7 +79,7 @@
 						내상점
 					</a>
 				<c:choose>
-					<c:when test="${loginInter == null}">
+					<c:when test="${login == null}">
 						<a class="login" href="<c:url value="/login"/>"> 
 							로그인/회원가입
 						</a>

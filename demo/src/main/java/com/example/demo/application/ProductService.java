@@ -93,9 +93,16 @@ public class ProductService implements ProductMapper {
 	}
 
 	@Override
-	public List<Product> search(String searchWord) {
+	public List<Product> search(String searchWord, String searchWordNoSpace) {
 
-		return productMapper.search(searchWord);
+		//String[] searchWordList = searchWord.split(" "); 
+		return productMapper.search(searchWord, searchWordNoSpace);
+	}
+
+	@Override
+	public int searchCount(String searchWord, String searchWordNoSpace) {
+
+		return productMapper.searchCount(searchWord, searchWordNoSpace);
 	}
 
 

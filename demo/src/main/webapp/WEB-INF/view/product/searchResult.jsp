@@ -16,18 +16,18 @@
 
 	<article class="article_product">
 	<c:forEach var="searchProduct" items="${searchProductList}">
-	<div class="container_product">
-	<a href="<c:url value="/productInfo/${searchProduct.pr_id}"/>">
-		<div class="div_pr_img">
-			<img src="${searchProduct.pr_img_1}" class="pr_img"/></td>
-		</div>
-		<div class="div_pr_title">
-			${searchProduct.pr_title}
-		</div>	
-		<div class="div_pr_price">
-			${searchProduct.pr_price}원
-		</div>
-	</div>
+			<div class="container_product">
+			<a href="<c:url value="/productInfo/${searchProduct.pr_id}"/>">
+				<div class="div_pr_img">
+					<img src="${searchProduct.pr_img_1}" class="pr_img"/></td>
+				</div>
+				<div class="div_pr_title">
+					${searchProduct.pr_title}
+				</div>	
+				<div class="div_pr_price">
+					${searchProduct.pr_price}원
+				</div>
+			</div>
 	</a>
 	</c:forEach>
 	</article>

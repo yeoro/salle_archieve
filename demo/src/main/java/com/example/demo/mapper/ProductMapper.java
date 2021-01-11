@@ -29,6 +29,10 @@ public interface ProductMapper {
 	String getMemberProductInfo(String email);
 	
 	//검색어 결과 출력
-	List<Product> search(String searchWord);
+	List<Product> search(String searchWord, String searchWordNoSpace);
+	
+	//검색어 결과 유무
+	int searchCount(String searchWord, String searchWordNoSpace);
+
 	
 }

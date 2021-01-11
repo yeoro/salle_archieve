@@ -35,12 +35,14 @@ public class LoginController {
         try {
             loginInfo = memberService.loginMember(login);
         } catch (IncorrectPasswordException passwordException) {
+        	//httpSession.removeAttribute("login");
             return "redirect:/login";
         } catch (UnregisteredMemberException memberException) {
+        	//httpSession.removeAttribute("login");
             return "redirect:/register/main";
         }
         
-        model.addAttribute("login", loginInfo);
+        //model.addAttribute("login", loginInfo);
 
         return "home";
     }

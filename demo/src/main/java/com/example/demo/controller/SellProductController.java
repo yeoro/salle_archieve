@@ -48,14 +48,10 @@ public class SellProductController {
     	
     	//파일 업로드 작업 수행(destination에 파일을 보내줌)
 
-    	new SellProductValidation().validate(product, errors);
-    	
-    	if (errors.hasErrors()) {
-    		return "sell/register";
-    	}
-    	
     	Login login = (Login) httpSession.getAttribute("login");
     	product.setPr_email(login.getEmail());
+    	
+    	product.setPr_title_alias(product.getPr_title().replaceAll("\s", ""));
     	
 		//ajax로 받은 img_file 정보를 넘겨줌 
 		product.setPr_img_1(product_file.getPr_img_1());
@@ -64,7 +60,14 @@ public class SellProductController {
 		product.setPr_img_4(product_file.getPr_img_4());
 		product.setPr_img_5(product_file.getPr_img_5());
     	
-    	productService.registerProduct(product);
+		new SellProductValidation().validate(product, errors);
+		
+		if (errors.hasErrors()) {
+			return "sell/register";
+		}
+		
+
+		productService.registerProduct(product);
 
     	return "home";
     }

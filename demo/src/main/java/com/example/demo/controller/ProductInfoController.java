@@ -77,10 +77,16 @@ public class ProductInfoController {
 	
 	@RequestMapping(value = "/search/result", method = RequestMethod.GET) 
 	public String searchGet(@RequestParam("searchWord") String searchWord, Model model) {
+		String searchWordNoSpace = searchWord.replaceAll("\s", "");
 		
-		//String searchWord = searchWordRaw.replaceAll("\\s", "");
-		model.addAttribute("searchProductList", productService.search(searchWord));
-		return "product/searchResult";
+		if (productService.searchCount(searchWord, searchWordNoSpace) == 0) {
+			model.addAttribute("searchWord",searchWord);
+			return "product/searchResultZero";
+		} else {
+			List<Product> productList = productService.search(searchWord, searchWordNoSpace);
+			model.addAttribute("searchProductList", productList);
+			return "product/searchResult";
+		}
 	}
-    
+
 }

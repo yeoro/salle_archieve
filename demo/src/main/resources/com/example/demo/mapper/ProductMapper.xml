@@ -10,8 +10,8 @@
     <insert id="registerProduct" parameterType="Product"
      useGeneratedKeys="true" keyProperty="pr_id">
         INSERT INTO
-        product(pr_email, pr_reg_date, pr_img_1, pr_title, pr_category, pr_region, pr_quality, pr_price, pr_detail, pr_img_2, pr_img_3, pr_img_4, pr_img_5)
-        VALUES(#{pr_email}, #{pr_reg_date}, #{pr_img_1}, #{pr_title}, #{pr_category}, #{pr_region}, #{pr_quality}, #{pr_price}, #{pr_detail}, #{pr_img_2}, #{pr_img_3}, #{pr_img_4}, #{pr_img_5});
+        product(pr_email, pr_reg_date, pr_img_1, pr_img_2, pr_img_3, pr_img_4, pr_img_5, pr_title, pr_category, pr_region, pr_quality, pr_price, pr_detail, pr_title_alias)
+        VALUES(#{pr_email}, #{pr_reg_date}, #{pr_img_1}, #{pr_img_2}, #{pr_img_3}, #{pr_img_4}, #{pr_img_5}, #{pr_title}, #{pr_category}, #{pr_region}, #{pr_quality}, #{pr_price}, #{pr_detail}, #{pr_title_alias});
     </insert>
     
     <!-- parsedatetime(#{pr_reg_date}, "yyyy/MM/DD hh:mm:ss") -->
@@ -53,7 +53,21 @@
     </select>
     <select id="search" resultType="Product">
     	<bind name="searchWordConcate" value="'%'+searchWord+'%'"></bind>
+    	<bind name="searchWordNoSpaceConcate" value="'%'+searchWordNoSpace+'%'"></bind>
     	SELECT *
-    	FROM FT_SEARCH_DATA('귀를',0,0)
+    	FROM PRODUCT
+    	WHERE PR_TITLE LIKE #{searchWordConcate} OR PR_TITLE LIKE #{searchWordNoSpaceConcate}
+    	OR
+    	PR_TITLE_ALIAS LIKE #{searchWordConcate} OR PR_TITLE_ALIAS LIKE #{searchWordNoSpaceConcate};
+    </select>
+
+    <select id="searchCount" resultType="int">
+    	<bind name="searchWordConcate" value="'%'+searchWord+'%'"></bind>
+    	<bind name="searchWordNoSpaceConcate" value="'%'+searchWordNoSpace+'%'"></bind>
+    	SELECT COUNT(*)
+    	FROM PRODUCT
+    	WHERE PR_TITLE LIKE #{searchWordConcate} OR PR_TITLE LIKE #{searchWordNoSpaceConcate}
+    	OR
+    	PR_TITLE_ALIAS LIKE #{searchWordConcate} OR PR_TITLE_ALIAS LIKE #{searchWordNoSpaceConcate};
     </select>
 </mapper>
