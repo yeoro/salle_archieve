@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.domain.Member;
@@ -62,8 +63,8 @@ public class ProductService implements ProductMapper {
 	}
 
 	@Override
-	public void deleteProduct() {
-		productMapper.deleteProduct();
+	public void deleteProduct(int pr_id) {
+		productMapper.deleteProduct(pr_id);
 	}
 
 	@Override
@@ -105,6 +106,11 @@ public class ProductService implements ProductMapper {
 		return productMapper.searchCount(searchWord, searchWordNoSpace);
 	}
 
+	@Override
+	public void updateProduct(Product product) {
+
+		productMapper.updateProduct(product);
+	}
 
 
 

@@ -10,8 +10,8 @@
     <insert id="registerProduct" parameterType="Product"
      useGeneratedKeys="true" keyProperty="pr_id">
         INSERT INTO
-        product(pr_email, pr_reg_date, pr_img_1, pr_img_2, pr_img_3, pr_img_4, pr_img_5, pr_title, pr_category, pr_region, pr_quality, pr_price, pr_detail, pr_title_alias)
-        VALUES(#{pr_email}, #{pr_reg_date}, #{pr_img_1}, #{pr_img_2}, #{pr_img_3}, #{pr_img_4}, #{pr_img_5}, #{pr_title}, #{pr_category}, #{pr_region}, #{pr_quality}, #{pr_price}, #{pr_detail}, #{pr_title_alias});
+        product(pr_email, pr_reg_date, pr_img_1, pr_img_2, pr_img_3, pr_img_4, pr_img_5, pr_title, pr_category, pr_region, pr_price, pr_detail, pr_title_alias)
+        VALUES(#{pr_email}, #{pr_reg_date}, #{pr_img_1}, #{pr_img_2}, #{pr_img_3}, #{pr_img_4}, #{pr_img_5}, #{pr_title}, #{pr_category}, #{pr_region}, #{pr_price}, #{pr_detail}, #{pr_title_alias});
     </insert>
     
     <!-- parsedatetime(#{pr_reg_date}, "yyyy/MM/DD hh:mm:ss") -->
@@ -70,4 +70,17 @@
     	OR
     	PR_TITLE_ALIAS LIKE #{searchWordConcate} OR PR_TITLE_ALIAS LIKE #{searchWordNoSpaceConcate};
     </select>
+    
+    <update id="updateSellProduct">
+    	UPDATE PRODUCT
+    	SET 
+    	(pr_email, pr_reg_date, pr_img_1, pr_img_2, pr_img_3, pr_img_4, pr_img_5, pr_title, pr_category, pr_region, pr_price, pr_detail, pr_title_alias)
+    	= (#{pr_email}, #{pr_reg_date}, #{pr_img_1}, #{pr_img_2}, #{pr_img_3}, #{pr_img_4}, #{pr_img_5}, #{pr_title}, #{pr_category}, #{pr_region}, #{pr_price}, #{pr_detail}, #{pr_title_alias}); 
+    </update>
+    
+    <delete id="deleteProduct">
+    	DELETE FROM PRODUCT
+    	WHERE pr_id = #{pr_id};
+    </delete>
+    
 </mapper>

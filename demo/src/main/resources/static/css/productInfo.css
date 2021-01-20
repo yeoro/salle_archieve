@@ -45,8 +45,29 @@ a {
 }
 
 .container_info1 {
+	display: flex;
+	width: 400px;
 	padding: 20px 0;
 	border-bottom: 1px solid #e9ecef;
+	justify-content: space-between;
+}
+
+.wrap_nickName_pr_region {
+	display: block;
+}
+
+.nickName, .pr_region {
+	display: block;
+}
+
+#btn_chat {
+	background-color: #70b8ff;
+	border: 2px solid #70b8ff;
+	width: 110px;
+	height: 30px;
+	border-radius: 3px;
+	color: #ffffff;
+	cursor: pointer;
 }
 
 .container_info2 {
@@ -63,5 +84,6 @@ a {
 	font-weight: bold;
 	font-size: 13px;
 }
+
 
 

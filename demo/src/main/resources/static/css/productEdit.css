@@ -1,0 +1,50 @@
+
+*{
+	box-sizing: border-box;
+	font-size: 11px;
+}
+
+textarea {
+	resize: none;	
+}
+
+#errors {
+	color: red;
+}
+
+/* ul */
+.wrap_img {
+	display: flex;
+	width: 800px;
+}
+
+/* li */
+.wrap_img_li {
+	position: relative;
+	width: 150px;
+	height: 100px;
+	margin-right: 20px; 
+	padding: 0;
+}
+
+/* img */
+#pr_img {
+	width: 100vm;
+	height: 100vm;
+}
+
+/* button */
+.button_img {
+	background-image: url(/resources/img/210114_Salle_exiticon2.png);
+	background-size: 20px;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	top: 0;
+	border-style: none;
+	border-radius: 20px;
+	background-color: rgba(255,255,255,0.5);
+	cursor: pointer;
+}
+
+

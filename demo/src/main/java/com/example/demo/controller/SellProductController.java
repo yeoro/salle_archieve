@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Iterator;
 
 import javax.annotation.Resource;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
@@ -69,7 +72,7 @@ public class SellProductController {
 
 		productService.registerProduct(product);
 
-    	return "home";
+    	return "product/productInfo";
     }
     
     //상품등록 이미지파일 업로드
@@ -129,6 +132,57 @@ public class SellProductController {
         return "sell/region";
     }
 
+	//profile에서 판매글 수정, 삭제하기
+	@RequestMapping(value= "/product/{pr_id}/edit", method = RequestMethod.GET)
+	public String profileEdit(Model model, @PathVariable int pr_id) {
+		
+		Product product = productService.getProductInfo(pr_id);
+		
+		model.addAttribute("product", product);
+				
+		return "product/productEdit"; 
+	}
+	
+	@RequestMapping(value= "/product/{pr_id}/save", method= RequestMethod.POST)
+	public String profileEditDone(@ModelAttribute("product") Product product, Errors errors) {
+		
+    	product.setPr_title_alias(product.getPr_title().replaceAll("\s", ""));
+    	
+		//ajax로 받은 img_file 정보를 넘겨줌 
+		product.setPr_img_1(product_file.getPr_img_1());
+		product.setPr_img_2(product_file.getPr_img_2());
+		product.setPr_img_3(product_file.getPr_img_3());
+		product.setPr_img_4(product_file.getPr_img_4());
+		product.setPr_img_5(product_file.getPr_img_5());
+    	
+		new SellProductValidation().validate(product, errors);
+		
+		if (errors.hasErrors()) {
+			return "product/productEdit";
+		}
+		
+		productService.updateProduct(product);
+		
+		return "product/productInfo";
+	}
+	
+	@RequestMapping(value= "/product/{pr_id}/delete", method= RequestMethod.GET)
+	public String profileDelete(Model model, @PathVariable int pr_id) throws UnsupportedEncodingException {
+		
+		Product product = productService.getProductInfo(pr_id);
+		
+		model.addAttribute("product", product);
+		
+		productService.deleteProduct(pr_id);
+		
+		String nickName = productService.getMemberProductInfo(product.getPr_email());
+		
+		String nickNameEncode = URLEncoder.encode(nickName, "UTF-8");
+		
+		return "redirect:/profile/" + nickNameEncode;
+	}
+	
+	
 
 	
     

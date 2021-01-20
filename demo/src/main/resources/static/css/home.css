@@ -31,6 +31,7 @@ html, body {
 	display: block;
 	position: sticky;
 	width: 100%;
+	height: 100px;
 }
 
 .nav-bar-wrap {	
@@ -191,16 +192,12 @@ input[id="searchWord"] {
 	margin-right: 10px;
 }
 
-.shopinfo {
-	margin-right: 10px;
-}
-
 /* toggle */
 
 .member-loggedin {
 	position: absolute;
 	top: 5;
-	margin-left: 40px;
+	margin-left: 30px;
 }
 
 #link_logininfo {

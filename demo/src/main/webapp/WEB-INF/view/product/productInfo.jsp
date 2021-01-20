@@ -13,8 +13,7 @@
 </head>
 <body>
 
-	<%@include file="../home.jsp" %>
-	
+	<%@include file="../home.jsp" %>	
 	<div class="container_pr_img">
 	<%-- <img>는 컨텐츠일 때 background-image와 중첩으로 쓰인다. 중요하기 때문 --%>
 		<a class="prev" onclick="button_click(-1)">&#10094</a>
@@ -22,14 +21,34 @@
 	</div>
 	
 	<div class="container_info1">
-		<div class="nickName">
-			<a href="<c:url value="/profile/${nickName}"/>">
-			${nickName}</a> 
+		<div class="wrap_nickName_pr_region">
+			<div class="nickName">
+			<form id="nickName_form" action="/profile/${nickName}" method="POST">
+				<a href="javascript:{}" onclick="formSubmit()">
+				${nickName}</a> 
+				<input type="hidden" name="pr_email" value="${product.pr_email}"/>
+			</form>
+			</div>
+		
+			<div class="pr_region">
+				${product.pr_region} 
+			</div>
 		</div>
-		<div class="pr_region">
-			${product.pr_region} 
+		
+		<div class="buy_chat">
+			<a href="/stomp-broadcast">
+				<button id="btn_chat">
+					채팅으로 거래하기
+				</button>
+			</a>
 		</div>
 	</div>
+	
+	<script type="text/javascript">
+		function formSubmit() {
+			document.getElementById('nickName_form').submit();
+		}
+	</script>
 
 
 	<div class="container_info2">
@@ -37,7 +56,7 @@
 				${product.pr_title}
 			</div>
 			<div class="pr_category_reg_date">
-				${product.pr_category}
+				<spring:message code="${product.pr_category}"/>
 				&nbsp;	
 				${hoursFromUpload}시간 전
 			</div>

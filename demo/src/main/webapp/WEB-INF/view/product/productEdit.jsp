@@ -12,7 +12,7 @@
 -->
     <title>판매하기</title>
 	<!-- CSS -->
-	<link rel="stylesheet" href="/resources/css/sell.css">
+	<link rel="stylesheet" href="/resources/css/productEdit.css">
 	<!-- jQuery -->
 	<script src="https://code.jquery.com/jquery-3.5.1.js">
 	</script>
@@ -23,15 +23,23 @@
 	<%@include file="../home.jsp" %>
 
 
-    <form:form action="done" method="post" enctype="multipart/form-data" modelAttribute="product">
+    <form:form action="save" method="post" enctype="multipart/form-data" modelAttribute="product">
     
     <section class="pr_img">
   		<p>	
     		<label for="img"><h2>상품 이미지</h2></label>
     	</p>
     	<div id="pr_img">
-	    	<input type="file" id="img" name="pr_img_files"/>	    	
-	    
+	    	<input type="file" id="img" name="pr_img_files"/>	 
+	    		<ul class="wrap_img">
+	    		<li class="wrap_img_li">
+	    		<img id="pr_img" src="${product.pr_img_1}"/>
+	    		<button type="button" class="button_img"></button>
+	    		</li>
+	    		<li class="wrap_img_li">
+	    		<img id="pr_img" src="${product.pr_img_1}"/>	    		
+	    		</li>   	
+	    		</ul>
     	</div>
 	    <%=request.getRealPath("/") %>
 	    <input id="upload" type="button" value="업로드" onclick="fileUpload()"/>
@@ -49,22 +57,22 @@
     <section class="pr_category">
 	    <p>
 	    	<h2>상품 카테고리</h2>
-		    <select id="pr_category" name="pr_category" required>
-		    	<option value="digital"><spring:message code="digital"/></option>
-		    	<option value="furniture"><spring:message code="furniture"/></option>
-		    	<option value="kids"><spring:message code="kids"/></option>
-		    	<option value="lifestyle"><spring:message code="lifestyle"/></option>
-		    	<option value="sports"><spring:message code="sports"/></option>
-		    	<option value="womengoods"><spring:message code="womengoods"/></option>
-		    	<option value="womenclothes"><spring:message code="womenclothes"/></option>
-		    	<option value="menclothes"><spring:message code="menclothes"/></option>
-		    	<option value="games"><spring:message code="games"/></option>
-		    	<option value="beauty"><spring:message code="beauty"/></option>
-		    	<option value="pets"><spring:message code="pets"/></option>
-		    	<option value="books"><spring:message code="books"/></option>
-		    	<option value="plants"><spring:message code="plants"/></option>
-		    	<option value="etc"><spring:message code="etc"/></option>
-			</select>
+		    <form:select id="pr_category" name="pr_category" required="required" path="pr_category">
+		    	<form:option value="digital"><spring:message code="digital"/></form:option>
+		    	<form:option value="furniture"><spring:message code="furniture"/></form:option>
+		    	<form:option value="kids"><spring:message code="kids"/></form:option>
+		    	<form:option value="lifestyle"><spring:message code="lifestyle"/></form:option>
+		    	<form:option value="sports"><spring:message code="sports"/></form:option>
+		    	<form:option value="womengoods"><spring:message code="womengoods"/></form:option>
+		    	<form:option value="womenclothes"><spring:message code="womenclothes"/></form:option>
+		    	<form:option value="menclothes"><spring:message code="menclothes"/></form:option>
+		    	<form:option value="games"><spring:message code="games"/></form:option>
+		    	<form:option value="beauty"><spring:message code="beauty"/></form:option>
+		    	<form:option value="pets"><spring:message code="pets"/></form:option>
+		    	<form:option value="books"><spring:message code="books"/></form:option>
+		    	<form:option value="plants"><spring:message code="plants"/></form:option>
+		    	<form:option value="etc"><spring:message code="etc"/></form:option>
+			</form:select>
 	    </p>
     </section>
     
@@ -100,41 +108,49 @@
 	    <p>
 	    <label>
 	    	<h2>상품 설명</h2>
-	   		<textarea id="pr_detail" placeholder="상품 설명을 입력하세요. 최대 500자" maxlength="1000" rows="10" cols="80" name="pr_detail" ></textarea>
+	   		<form:textarea id="pr_detail" placeholder="상품 설명을 입력하세요. 최대 500자" maxlength="1000" rows="10" cols="80" name="pr_detail" path="pr_detail"></form:textarea>
 		    <form:errors id="errors" path="pr_detail"/>
 		</label>
 	    </p>
     </section>
     
-	<input type="submit" value="등록하기" /> 
+	<input type="submit" value="저장하기" /> 
     </form:form>
     
     <!-- Javascript -->
     <!-- <script type="text/javascript" scr="/resources/static/js/sell.js"></script> -->
-    <script type="text/javascript">
+    <script>
     
     var img_count = 1;
     var formData = new FormData();
 	    
     //pr_img
 	//input 파일첨부 버튼 클릭하면 실행되는 change 메서드
-	$("#img").change(function fileadd() {
+	$(documnet).ready(function fileadd() {
 		var reader = new FileReader;
 	//이미지 파일 정보와 화면출력을 위해 <img> 태그를 변수로 만듦
-		var str = "<img id='img_"+(img_count)+"' src=''/>";
-	//파일 경로에 넣기 위해 String으로 변환시켜줌
-		var img_count_string = img_count.toString();
+	var i = 1;  
+		while(i < 6) {
+			switch (i) {
+			case 1:
+				if (${product.pr_img_1} != null) {
+					var str = "<img id='img_1' src='${product.pr_img_1}'/>";
+				}
+				break;
+			}
+			
+			i++;
+		}
 		
 	//jQuery append 메서드를 사용해 <div id="pr_img"> 안에 <img> 태그 변수를 추가해줌
 		$("#pr_img").append(str);
 	
-	//formdata에 append
-	
 	//onload는 파일이 업로드 완료된 시점에 function을 발생시키는 메서드
 	//<img src=""> 사용자가 업로드한 이미지 파일 경로를 src로 저장해줌(data.target.result) 
+		var img_count_string = img_count.toString();
 		reader.onload = function(data) {
 	//태그 안의 속성을 입력할 수 있는 jQuery attr 메서드를 사용 
-			$('#img_' + img_count_string).attr('src', data.target.result).width(150);
+			$('#img_' + img_count_string).width(150);
 		};
 		
 	//화면에 이미지를 출력해주는 FileReader 객체 인스턴스 reader.readAsDataURL();

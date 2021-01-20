@@ -75,9 +75,6 @@
 					<a class="sell" href="<c:url value="/sell/register"/>"> 
 						판매하기
 					</a>
-					<a class="shopinfo" href="<c:url value="/mystore"/>"> 
-						내상점
-					</a>
 				<c:choose>
 					<c:when test="${login == null}">
 						<a class="login" href="<c:url value="/login"/>"> 
@@ -96,8 +93,13 @@
 								</a>
 							</li>
 							<li>
-								<a href="/mystore">
-									내상점
+								<a href="<c:url value="/profile/${login.getNickName()}"/>">
+									프로필
+								</a>
+							</li>					
+							<li>
+								<a href="<c:url value="/chat"/>">
+									채팅
 								</a>
 							</li>					
 						</ul>

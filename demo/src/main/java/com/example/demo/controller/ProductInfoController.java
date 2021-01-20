@@ -53,6 +53,9 @@ public class ProductInfoController {
 	        Timestamp tsClient = Timestamp.valueOf(LocalDateTime.now());
 	        long diffTime = tsClient.getTime() - productInfo.getPr_reg_date().getTime();
 	        int hours = (int) (diffTime / (1000 * 3600));
+	        if (hours < 1) {
+	        	hours = 0;
+	        }
 	        productInfo.setHoursFromUpload(hours);
 			model.addAttribute("hoursFromUpload",productInfo.getHoursFromUpload());
 		

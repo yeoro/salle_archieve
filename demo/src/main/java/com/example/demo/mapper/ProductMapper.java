@@ -14,7 +14,9 @@ public interface ProductMapper {
 	
 	int getCountProduct();
 
-	void deleteProduct();
+	void deleteProduct(int pr_id);
+	
+	void updateProduct(Product product);
 	
 	//ProductList를 가져옴
 	List<Product> getProductList();

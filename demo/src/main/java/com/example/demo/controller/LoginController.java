@@ -8,8 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.application.MemberService;
+import com.example.demo.application.ProductService;
 import com.example.demo.domain.Login;
 import com.example.demo.exception.IncorrectPasswordException;
 import com.example.demo.exception.UnregisteredMemberException;
@@ -19,6 +21,9 @@ public class LoginController {
 	
     @Autowired
     MemberService memberService;
+    
+    @Autowired
+    ProductService productService;
 
     //회원가입 페이지 노출
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -27,7 +32,7 @@ public class LoginController {
         return "login";
     }
 
-    @RequestMapping(value = "/login/done", method = RequestMethod.POST)
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public String loginHandle(@ModelAttribute Login login, HttpSession httpSession, Model model) {
 
     	Login loginInfo;
@@ -35,16 +40,18 @@ public class LoginController {
         try {
             loginInfo = memberService.loginMember(login);
         } catch (IncorrectPasswordException passwordException) {
-        	//httpSession.removeAttribute("login");
-            return "redirect:/login";
+        	model.addAttribute("login", null);
+            return "login";
         } catch (UnregisteredMemberException memberException) {
-        	//httpSession.removeAttribute("login");
-            return "redirect:/register/main";
+        	model.addAttribute("login", null);
+            return "login";
         }
         
         //model.addAttribute("login", loginInfo);
 
-        return "home";
+		model.addAttribute("productList", productService.getProductList());
+
+        return "main";
     }
 
 }

@@ -88,6 +88,25 @@
 	    </p>
     </section>
     
+    <section class="pr_quality">
+    	<p>
+	    	<p>
+		    	<h2>상품 상태</h2>
+		    </p>	    	
+	    		<input type="radio" id="pr_quality" name="pr_quality" value="상" />
+	    		<label for="pr_quality">상</label>
+	    	
+	    
+	    		<input type="radio" id="pr_quality" name="pr_quality" value="중" />
+	    		<label for="pr_quality">중</label>
+	    	
+	    	
+	    		<input type="radio" id="pr_quality" name="pr_quality" value="하" />
+	    		<label for="pr_quality">하</label>
+			    <form:errors id="errors" path="pr_quality"/>
+    	</p>
+    </section>
+    
     <section class="pr_price">
 	    <p>
 	    	<h2>상품 가격</h2>
@@ -100,7 +119,7 @@
 	    <p>
 	    <label>
 	    	<h2>상품 설명</h2>
-	   		<textarea id="pr_detail" placeholder="상품 설명을 입력하세요. 최대 500자" maxlength="1000" rows="10" cols="80" name="pr_detail" ></textarea>
+	   		<textarea id="pr_detail" placeholder="상품 설명을 입력하세요. 최대 500자" maxlength="1000" rows="10" cols="80" name="pr_detail"></textarea>
 		    <form:errors id="errors" path="pr_detail"/>
 		</label>
 	    </p>
@@ -111,7 +130,7 @@
     
     <!-- Javascript -->
     <!-- <script type="text/javascript" scr="/resources/static/js/sell.js"></script> -->
-    <script type="text/javascript">
+    <script>
     
     var img_count = 1;
     var formData = new FormData();

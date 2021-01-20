@@ -8,7 +8,7 @@
 	
 		//activate Enterkey for Search
 			var searchWord = document.getElementById('searchWord');
-			var sarchButton = document.getElementsByClassName('searchButton');
+			var searchButton = document.getElementsByClassName('searchButton');
 			searchWord.addEventListener('keyup', function(event) {
 				
 				if (event.keyCode === null) {
