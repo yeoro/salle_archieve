@@ -1,33 +1,21 @@
 package com.example.demo.controller;
 
-import java.io.File;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Iterator;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.example.demo.application.ProductService;
-import com.example.demo.domain.Member;
+import com.example.demo.domain.ChatRoom;
 import com.example.demo.domain.Product;
-import com.example.demo.domain.UuidImgname;
-import com.example.demo.validation.SellProductValidation;
 
 @Controller
 public class ProductInfoController {
@@ -38,13 +26,16 @@ public class ProductInfoController {
 	@Autowired
 	Product product;
 	
+	ChatRoom chatRoom;
+	
 	//TODO: productInfo 뒤 seq 지정해야한다.
 	@RequestMapping(value = "/productInfo/{pr_id}", method = RequestMethod.GET)
-	public String productInfoGet(Model model, @PathVariable int pr_id) {
+	public String productInfoGet(Model model, @PathVariable int pr_id, 
+			@ModelAttribute("chatRoom") ChatRoom chatRoom) {		
 		
 		//.jsp에서 ${product.pr_title}
 		Product productInfo = productService.getProductInfo(pr_id);
-		model.addAttribute(productInfo);
+		model.addAttribute("product", productInfo);
 		
 		//member nickname
 		model.addAttribute("nickName",productService.getMemberProductInfo(productInfo.getPr_email()));

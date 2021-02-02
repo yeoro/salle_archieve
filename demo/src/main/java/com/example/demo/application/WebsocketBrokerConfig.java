@@ -3,6 +3,7 @@ package com.example.demo.application;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
@@ -16,26 +17,41 @@ public class WebsocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry registry) {
-		//for target broker destination
+		
+		//for subscribe prefix
 		registry.enableSimpleBroker("/topic");
-		//for application target destination
+		//for publish prefix
 		registry.setApplicationDestinationPrefixes("/app");
 		//user destination provides ability to have unique user queue
-		//registry.setUserDestinationPrefix("/user");
-		WebSocketMessageBrokerConfigurer.super.configureMessageBroker(registry);
+		registry.setUserDestinationPrefix("/user");
+		
 	}
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 		
 		registry.addEndpoint("/broadcast")
-		//when browser or network cause problems fallback allows realtime connectivity 
-				.withSockJS()
-				.setHeartbeatTime(60_000);
-			//.setAllowedOrigins("*")
+			.withSockJS()
+			.setHeartbeatTime(60_000);
+//
+//		//when browser or network cause problems fallback allows realtime connectivity 
+//		registry.addEndpoint("/broadcast")
+//				.withSockJS()
+//				.setHeartbeatTime(60_000);
+		
+		//send message to single user
+		registry.addEndpoint("/chat")
+				.withSockJS();
 				
-		WebSocketMessageBrokerConfigurer.super.registerStompEndpoints(registry);
 	}
+
+	@Override
+	public void configureClientInboundChannel(ChannelRegistration registration) {
+		
+		registration.interceptors(new UserInterceptor());
+	}
+	
+	
 
 //	@Override
 //	public boolean configureMessageConverters(List<MessageConverter> messageConverters) {

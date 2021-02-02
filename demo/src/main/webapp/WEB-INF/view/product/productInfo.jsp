@@ -25,7 +25,8 @@
 			<div class="nickName">
 			<form id="nickName_form" action="/profile/${nickName}" method="POST">
 				<a href="javascript:{}" onclick="formSubmit()">
-				${nickName}</a> 
+					${nickName}
+				</a> 
 				<input type="hidden" name="pr_email" value="${product.pr_email}"/>
 			</form>
 			</div>
@@ -36,18 +37,27 @@
 		</div>
 		
 		<div class="buy_chat">
-			<a href="/stomp-broadcast">
+		<form id="chatSubmit_form" action="/chatMessage" method="GET">
+			<a href="javascript:{}" onclick="chatSubmit()">
+				<input type="hidden" name="nickName" value="${nickName}"/>
+				<input type="hidden" name="pr_id" value="${product.pr_id}"/>
+				<input type="hidden" name="pr_email" value="${product.pr_email}"/>
 				<button id="btn_chat">
 					채팅으로 거래하기
 				</button>
 			</a>
+		</form>
 		</div>
 	</div>
 	
 	<script type="text/javascript">
 		function formSubmit() {
 			document.getElementById('nickName_form').submit();
-		}
+		}		 	
+		
+	 	function chatSubmit() {
+	 		document.getElementById('chatSubmit_form').submit();
+	 	} 
 	</script>
 
 
@@ -137,6 +147,7 @@
 		 		} 
 		 		slides[currSlide - 1].style.display="block";
 		 	}
+
 
 
 		 	</script>

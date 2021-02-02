@@ -40,14 +40,18 @@
 			<c:choose>
 				<c:when test="${login.email == product.pr_email}">
 				<div class="wrap_update">
-					<button id="update">
-						<a href="<c:url value="/product/${product.pr_id}/edit"/>">수정</a>
-					</button> 	
+					<a href="<c:url value="/product/${product.pr_id}/edit"/>">
+						<button id="update">
+							수정
+						</button>
+					</a> 	
 				</div>	
 				<div class="wrap_delete">
-					<button id="delete" onclick="deleteAlert()">
-						<a href="<c:url value="/product/${product.pr_id}/delete"/>">삭제</a>
-					</button>
+					<a href="<c:url value="/product/${product.pr_id}/delete"/>">
+						<button id="delete" onclick="deleteAlert()">
+							삭제
+						</button>
+					</a>
 				</div>	
 				</c:when>
 				<c:otherwise>

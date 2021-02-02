@@ -41,7 +41,9 @@ public class SellProductController {
 	@RequestMapping(value = "/sell/register", method = RequestMethod.GET)
     public String sellAttempt(Model model) {
 
-    	model.addAttribute("product", new Product());	
+		Product product = new Product();
+		
+    	model.addAttribute("product", product);	
         return "sell/register";
     }
     

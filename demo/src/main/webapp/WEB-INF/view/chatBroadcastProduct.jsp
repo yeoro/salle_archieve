@@ -16,36 +16,44 @@
 	<div class="container">
 		<div class="title_text">
 			<h2>Web Socket and STOMP and SockJS</h2>
-			<p>Sample of basic Websocket broadcast with STOMP and sockJS</p>
 		</div>
 		<div class="row">
 			<div class="col_6">
 				<div class="row_3">
 					<div class="input_group">
-					Websocket connection:&nbsp;
+						
 						<div class="btn_group">
 							<button type="button" id="connect" class="btn btn-sm btn-outline-secondary" onclick="connect()">connect</button>
 							<button type="button" id="disconnect" class="btn btn-sm btn-outline-secondary" onclick="disconnect()" disabled>disconnect</button>
 						</div>
+						 
 					</div>				
+				</div>				
+				<div class="col_6">
+					<div id="content">
+						${chatHistory}
+					</div>
+					<!-- 
+					<div>
+						<span class="float-right">
+							<button id="clear" class="btn btn-primary" onclick="clearBroadcast()" style="display: none;">Clear</button>				
+						</span>
+					</div>
+					-->
 				</div>
 				<div class="row_3">
-					<div class="input_group" id="sendMessage" style="display: none;">
+					<div class="input_group" id="sendMessage">
 						<input type="text" placeholder="Message" id="message" class="form_control"/>
 						<div class="input_group_append">
 							<button id="send" class="btn btn-primary" onclick="send()">Send</button>
-							<input type="hidden" value="${login.getNickName()}" id="nickName"/>
-						</div>
+							<input type="hidden" value="${login.getNickName()}" id="buyerName"/>
+							<input type="hidden" value="${login.getEmail()}" id="buyerId"/>
+							<input type="hidden" value="${pr_id}" id="pr_id"/>
+							<input type="hidden" value="${sellerId}" id="sellerId"/>
+							<input type="hidden" value="${sellerName}" id="sellerName"/>						
+							<input type="hidden" value="${id}" id="id"/>						
+						</div>					
 					</div>				
-				</div>
-			</div>
-			
-			<div class="col_6">
-				<div id="content"></div>
-				<div>
-					<span class="float-right">
-						<button id="clear" class="btn btn-primary" onclick="clearBroadcast()" style="display: none;">Clear</button>				
-					</span>
 				</div>
 			</div>
 		</div>
@@ -58,8 +66,14 @@
 	<script type="text/javascript">
 	
 		var stompClient = null;
-		var nickName = $('#nickName').val() + ":";
-	
+		var buyerName = $('#buyerName').val();
+		var buyerId = $('#buyerId').val();
+		var pr_id = $('#pr_id').val();
+		var sellerName = $('#sellerName').val();
+		var sellerId = $('#sellerId').val();	
+		var senderName = $('#buyerName').val();
+		var id = $('#id').val();
+		
 		function setConnected(connected) {		
 			$('#connect').prop('disabled', connected);
 			$('#disconnect').prop('disabled', !connected);
@@ -75,37 +89,17 @@
 			stompClient = Stomp.over(socket);
 			
 			stompClient.connect({}, function() {
-				stompClient.subscribe('/topic/messages', function(output) {
+				stompClient.subscribe('/user/' + id + '/queue/messages', function(output) {
 					console.log("broadcastMessage working");
 					showBroadcastMessage(createTextNode(JSON.parse(output.body)));
 				});
-						sendConnection('connected to server please');
 						setConnected(true);				
 				}, 
 						function (err) {
 							alert('error' + err);
-				
 			});
 
 		};
-		
-		function disconnect() {
-			
-			if(stompClient!= null) {
-				sendConnection('disconnected from the server');
-				
-				stompClient.disconnect(function() {
-					console.log('disconnected...');
-					setConnected(false);
-				});
-			}
-		}
-		
-		function sendConnection(message) {
-			
-			var content = nickName + message;
-			sendBroadcast({'chatId': 'server', 'content' : content})
-		}
 		
 		function sendBroadcast(json) {
 			
@@ -113,8 +107,16 @@
 		}
 		
 		function send() {
+			ajaxChatRoom();
 			var content = $('#message').val();
-			sendBroadcast({'chatId': nickName, 'content': content});
+			sendBroadcast({
+				'id': id,
+				'buyerName': buyerName, 'content': content, 
+				'sellerName': sellerName,
+				'buyerId': buyerId, 'sellerId': sellerId,
+				'pr_id': pr_id,
+				'senderName': senderName
+				});
 			$('#message').val("");
 		}
 		
@@ -133,22 +135,41 @@
 		function createTextNode(messageObj) {
             return '<div class="row alert alert-info"><div class="col_8">' +
             messageObj.content +
-            '</div><div class="col_4 text-right"><small>[<b>' +
-            messageObj.chatId +
-            '</b>' +
-            messageObj.time +
+            '</div><div class="col_4 text-right"><small>[' +
+            messageObj.senderName +
+            messageObj.sendTime +
             ']</small>' +
             '</div></div>';
         }
 		
 		function showBroadcastMessage(message) {
             $("#content").html($("#content").html() + message);
-            $("#clear").show();
         }
 		
 		function clearBroadcast() {
 			$('#content').html("");
-			$('#clear').hide();
+		}
+		
+		function ajaxChatRoom() {
+			
+			$.ajax({
+				url:'/addChatRoom/ajax',
+				type: 'POST',
+				data: JSON.stringify({
+					id: id,
+					pr_id: pr_id,
+					buyerId: buyerId,
+					sellerId: sellerId,
+					buyerName: buyerName,
+					sellerName: sellerName
+				}),
+				dataType: 'json',
+				//magic setting resolved an error
+				contentType: 'application/json',
+				complete: function(data) {
+					console.log('jQuery ajax from submit complete');
+				}
+			});
 		}
 	
 	</script>

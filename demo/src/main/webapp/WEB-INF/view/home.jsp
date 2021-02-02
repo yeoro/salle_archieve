@@ -98,7 +98,7 @@
 								</a>
 							</li>					
 							<li>
-								<a href="<c:url value="/chat"/>">
+								<a href="<c:url value="/chatList"/>">
 									채팅
 								</a>
 							</li>					

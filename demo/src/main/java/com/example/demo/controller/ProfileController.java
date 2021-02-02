@@ -9,8 +9,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,7 +18,6 @@ import com.example.demo.application.ProductService;
 import com.example.demo.application.ProfileService;
 import com.example.demo.domain.Login;
 import com.example.demo.domain.Product;
-import com.example.demo.validation.SellProductValidation;
 
 @Controller
 public class ProfileController {
@@ -37,12 +34,8 @@ public class ProfileController {
 		
 		model.addAttribute("nickName", nickName);
 		
-//			Login login = (Login)session.getAttribute("login");
-//			String email = login.getEmail();
-		
 		List<Product> sellerProductList;
 		
-		//generate SQL ProductList by email in mapper
 		if (pr_email == "") {
 			sellerProductList = profileService.getSellerProductList(pr_email);
 			model.addAttribute("totalProduct", profileService.getTotalProduct(pr_email));
@@ -64,38 +57,33 @@ public class ProfileController {
 		
 		model.addAttribute("sellerProductList", sellerProductList);
 		
-		
 		return "profile";
 	}
 
-	@RequestMapping(value = "/profile/{nickName}", method = RequestMethod.POST)
-	public String profileReadPost(HttpSession session, @PathVariable String nickName, @RequestParam(value="pr_email") String pr_email,
-			Model model) {
-		
-			model.addAttribute("nickName", nickName);
-
-//			Login login = (Login)session.getAttribute("login");
-//			String email = login.getEmail();
-			
-			//generate SQL ProductList by email in mapper
-			List<Product> sellerProductList = profileService.getSellerProductList(pr_email);
-			//hoursfromupload
-	        Timestamp tsClient = Timestamp.valueOf(LocalDateTime.now());
-			for (Product product : sellerProductList) {
-				long diffTime = tsClient.getTime() - product.getPr_reg_date().getTime();
-				int hours = (int) (diffTime / (1000 * 3600));
-				if (hours < 1) {
-					hours = 0;
-				}
-				product.setHoursFromUpload(hours);
-			}
-			
-			model.addAttribute("sellerProductList", sellerProductList);
-			
-			model.addAttribute("totalProduct", profileService.getTotalProduct(pr_email));
-	
-		return "profile";
-	}
+//	@RequestMapping(value = "/profile/{nickName}", method = RequestMethod.POST)
+//	public String profileReadPost(HttpSession session, @PathVariable String nickName, @RequestParam(value="pr_email") String pr_email,
+//			Model model) {
+//		
+//			model.addAttribute("nickName", nickName);
+//
+//			List<Product> sellerProductList = profileService.getSellerProductList(pr_email);
+//			//hoursfromupload
+//	        Timestamp tsClient = Timestamp.valueOf(LocalDateTime.now());
+//			for (Product product : sellerProductList) {
+//				long diffTime = tsClient.getTime() - product.getPr_reg_date().getTime();
+//				int hours = (int) (diffTime / (1000 * 3600));
+//				if (hours < 1) {
+//					hours = 0;
+//				}
+//				product.setHoursFromUpload(hours);
+//			}
+//			
+//			model.addAttribute("sellerProductList", sellerProductList);
+//			
+//			model.addAttribute("totalProduct", profileService.getTotalProduct(pr_email));
+//	
+//		return "profile";
+//	}
 	
 		
 
