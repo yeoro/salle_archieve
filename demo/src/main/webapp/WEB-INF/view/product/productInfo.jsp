@@ -42,6 +42,7 @@
 				<input type="hidden" name="nickName" value="${nickName}"/>
 				<input type="hidden" name="pr_id" value="${product.pr_id}"/>
 				<input type="hidden" name="pr_email" value="${product.pr_email}"/>
+				<input type="hidden" name="pr_title" value="${product.pr_title}"/>
 				<button id="btn_chat">
 					채팅으로 거래하기
 				</button>

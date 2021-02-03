@@ -10,16 +10,19 @@
 <title>Web socket STOMP SockJS Example</title>
 	<!-- jQuery -->
 	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<link rel="stylesheet" href="/resources/css/chatBroadcastProduct.css">
+	
 
 </head>
 <body>
 	<div class="container">
 		<div class="title_text">
-			<h2>Web Socket and STOMP and SockJS</h2>
+			<h2>${pr_title}</h2>
 		</div>
 		<div class="row">
 			<div class="col_6">
 				<div class="row_3">
+				<!-- 
 					<div class="input_group">
 						
 						<div class="btn_group">
@@ -27,11 +30,20 @@
 							<button type="button" id="disconnect" class="btn btn-sm btn-outline-secondary" onclick="disconnect()" disabled>disconnect</button>
 						</div>
 						 
-					</div>				
+					</div>
+				 -->				
 				</div>				
 				<div class="col_6">
 					<div id="content">
-						${chatHistory}
+						<div id="content">
+							<c:forEach var="chatRoom" items="${chatHistory}">
+								<p>
+									<span id="chatRoomSenderName">${chatRoom.senderName}</span><br>
+									<span id="chatRoomContent">${chatRoom.content}</span><br>
+									<span id="chatRoomSendTime">${chatRoom.sendTime}</span><br>
+								</p>	
+							</c:forEach>
+						</div>
 					</div>
 					<!-- 
 					<div>
@@ -45,7 +57,7 @@
 					<div class="input_group" id="sendMessage">
 						<input type="text" placeholder="Message" id="message" class="form_control"/>
 						<div class="input_group_append">
-							<button id="send" class="btn btn-primary" onclick="send()">Send</button>
+							<button id="send" class="btn btn-primary" onclick="send()">보내기</button>
 							<input type="hidden" value="${login.getNickName()}" id="buyerName"/>
 							<input type="hidden" value="${login.getEmail()}" id="buyerId"/>
 							<input type="hidden" value="${pr_id}" id="pr_id"/>
@@ -74,7 +86,8 @@
 		var senderName = $('#buyerName').val();
 		var id = $('#id').val();
 		
-		function setConnected(connected) {		
+		
+/*		function setConnected(connected) {		
 			$('#connect').prop('disabled', connected);
 			$('#disconnect').prop('disabled', !connected);
 			if (connected) {
@@ -83,17 +96,20 @@
 				$('#sendMessage').hide();				
 			}
 		};
+*/
+		$(document).ready(connect());
 		
 		function connect() {
 			var socket = new SockJS('/broadcast');
+			var url = '/user/' + id + '/queue/messages';
 			stompClient = Stomp.over(socket);
 			
 			stompClient.connect({}, function() {
-				stompClient.subscribe('/user/' + id + '/queue/messages', function(output) {
+				stompClient.subscribe(url, function(output) {
 					console.log("broadcastMessage working");
 					showBroadcastMessage(createTextNode(JSON.parse(output.body)));
 				});
-						setConnected(true);				
+						//setConnected(true);				
 				}, 
 						function (err) {
 							alert('error' + err);
@@ -107,11 +123,10 @@
 		}
 		
 		function send() {
-			ajaxChatRoom();
 			var content = $('#message').val();
 			sendBroadcast({
 				'id': id,
-				'buyerName': buyerName, 'content': content, 
+				'buyerName': buyerName, 'content': content,
 				'sellerName': sellerName,
 				'buyerId': buyerId, 'sellerId': sellerId,
 				'pr_id': pr_id,
@@ -133,13 +148,15 @@
 		});
 		
 		function createTextNode(messageObj) {
-            return '<div class="row alert alert-info"><div class="col_8">' +
-            messageObj.content +
-            '</div><div class="col_4 text-right"><small>[' +
+			console.log("createTextNode");
+			console.log("messageObj: " + messageObj.content);
+            return '<p><div class="row alert alert-info"><div class="col_8">' +
             messageObj.senderName +
+            '</div><div class="col_4 text-right">' +
+            messageObj.content+
+            '</div><div>[' +
             messageObj.sendTime +
-            ']</small>' +
-            '</div></div>';
+            ']</div></p>';
         }
 		
 		function showBroadcastMessage(message) {

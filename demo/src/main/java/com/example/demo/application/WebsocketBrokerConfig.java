@@ -3,7 +3,6 @@ package com.example.demo.application;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
@@ -19,11 +18,11 @@ public class WebsocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
 	public void configureMessageBroker(MessageBrokerRegistry registry) {
 		
 		//for subscribe prefix
-		registry.enableSimpleBroker("/topic");
+		registry.enableSimpleBroker("/user");
 		//for publish prefix
 		registry.setApplicationDestinationPrefixes("/app");
 		//user destination provides ability to have unique user queue
-		registry.setUserDestinationPrefix("/user");
+		//registry.setUserDestinationPrefix("/user");
 		
 	}
 
@@ -38,20 +37,7 @@ public class WebsocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
 //		registry.addEndpoint("/broadcast")
 //				.withSockJS()
 //				.setHeartbeatTime(60_000);
-		
-		//send message to single user
-		registry.addEndpoint("/chat")
-				.withSockJS();
-				
 	}
-
-	@Override
-	public void configureClientInboundChannel(ChannelRegistration registration) {
-		
-		registration.interceptors(new UserInterceptor());
-	}
-	
-	
 
 //	@Override
 //	public boolean configureMessageConverters(List<MessageConverter> messageConverters) {
