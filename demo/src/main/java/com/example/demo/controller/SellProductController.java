@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,6 +48,15 @@ public class SellProductController {
     	model.addAttribute("product", product);	
         return "sell/register";
     }
+
+	@RequestMapping(value = "/sell/register", method = RequestMethod.POST)
+	public String sellAttemptPost(Model model) {
+		
+		Product product = new Product();
+		
+		model.addAttribute("product", product);	
+		return "sell/register";
+	}
     
     @RequestMapping(value = "/sell/done", method = RequestMethod.POST)
     public String sellHandle(@ModelAttribute("product") Product product, Errors errors,
@@ -133,6 +144,13 @@ public class SellProductController {
 
         return "sell/region";
     }
+	
+	//주소검색 submit POST
+	@RequestMapping(value= "/sell/region", method= RequestMethod.POST)
+	public void sellRegionPost() {
+		
+		
+	}
 
 	//profile에서 판매글 수정, 삭제하기
 	@RequestMapping(value= "/product/{pr_id}/edit", method = RequestMethod.GET)
@@ -168,20 +186,48 @@ public class SellProductController {
 		return "product/productInfo";
 	}
 	
+	String flag;
+	
 	@RequestMapping(value= "/product/{pr_id}/delete", method= RequestMethod.GET)
 	public String profileDelete(Model model, @PathVariable int pr_id) throws UnsupportedEncodingException {
 		
 		Product product = productService.getProductInfo(pr_id);
 		
+		//for pr_email to profile controller
 		model.addAttribute("product", product);
-		
-		productService.deleteProduct(pr_id);
+		//delete only if confirm is yes
+		if (flag.equals("true")) {
+			productService.deleteProduct(pr_id);
+		}
 		
 		String nickName = productService.getMemberProductInfo(product.getPr_email());
 		
 		String nickNameEncode = URLEncoder.encode(nickName, "UTF-8");
 		
 		return "redirect:/profile/" + nickNameEncode;
+	}
+	
+	@RequestMapping(value= "/ajax/delete", method=RequestMethod.POST)
+	public void ajaxDelete(@RequestBody String json) {
+		
+		JSONObject jsn = new JSONObject(json);
+		
+		flag = (String) jsn.get("flag");
+	
+		System.out.println("flag: " + flag);
+	
+	}
+
+	@RequestMapping(value= "/prac/sample", method=RequestMethod.GET)
+	public String jusoPrac() {
+		
+		return "/prac/sample";
+	}
+
+	@RequestMapping(value= "/prac/jusoPopup", method=RequestMethod.GET)
+	public String jusoPracPopup() {
+		
+		return "/prac/jusoPopup";
 	}
 	
 	

@@ -40,18 +40,19 @@
 			<c:choose>
 				<c:when test="${login.email == product.pr_email}">
 				<div class="wrap_update">
-					<a href="<c:url value="/product/${product.pr_id}/edit"/>">
+					 <a href="<c:url value="/product/${product.pr_id}/edit"/>">  
 						<button id="update">
 							수정
 						</button>
 					</a> 	
 				</div>	
 				<div class="wrap_delete">
-					<a href="<c:url value="/product/${product.pr_id}/delete"/>">
+				 <a href="<c:url value="/product/${product.pr_id}/delete"/>">
+				 <input type="hidden" id="pr_img" value="${product.pr_id}"> 
 						<button id="delete" onclick="deleteAlert()">
 							삭제
 						</button>
-					</a>
+				</a>
 				</div>	
 				</c:when>
 				<c:otherwise>
@@ -62,17 +63,34 @@
 </div>
 
 	<script type="text/javascript">
+	
 			function deleteAlert() {
-				
+				var flag = "false"; 
 				var result = confirm("정말 삭제하시겠습니까?");
 				
-				if(result) {
-					alert("삭제되었습니다.");	
-				} else {
-					
+				console.log('result: ' + result); 
+
+				if (result) {
+					flag = "true";
 				}
+					
+				console.log('flag: ' + flag); 
+				
+				$.ajax({
+					url:'/ajax/delete',
+					type: 'POST',
+					data: JSON.stringify({
+						flag: flag
+					}),
+					dataType: 'json',
+					//magic setting resolved an error
+					contentType: 'application/json',
+					success: function(data) {
+						console.log('jQuery ajax delete success');
+					}
+				});
 			}
-	
+			
 	</script>
 
 

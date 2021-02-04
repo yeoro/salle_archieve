@@ -21,6 +21,10 @@
 <body>
 
 	<%@include file="../home.jsp" %>
+	
+	<%
+		String test = request.getParameter("test");
+	%>
 
 
     <form:form action="done" method="post" enctype="multipart/form-data" modelAttribute="product">
@@ -73,18 +77,8 @@
 	    	<h2>거래지역</h2>
 	    </p>
 	    <p>
-	    	<p>
-	    		<!-- <form id="form" name="form" method="post"> -->
-		    		<input type="button" onclick="goPopup();" value="주소검색">
-		    </p>
-					우편번호<input type="text" id="zipNo" name="zipNo" /><br>
-				    전체주소 <input type="text" id="roadFullAddr" name="roadFullAddr" /><br>
-				    도로명주소 <form:input type="text" id="roadAddrPart1" name="pr_region" path="pr_region"/>
-				    <form:errors id="errors" path="pr_region"/>
-				    <br>
-					상세주소<input type="text" id="addrDetail" name="addrDetail" /><br> 
-					참고주소<input type="text" id="roadAddrPart2" name="roadAddrPart2" /><br>
-				<!--</form> -->
+		    <input type="text" id="roadFullAddr" name="roadFullAddr" placeholder="전체주소"/>	    
+	    	<button onclick="goPopup()">주소검색</button>
 	    </p>
     </section>
     
@@ -184,16 +178,12 @@
 	//pr_region
 	function goPopup() {
 			
-			var pop = window.open("/sell/region","pop","width=570, height=420, scrollbars=yes, resizable=yes");
+			var pop = window.open("/prac/region.jsp","pop","width=570, height=420, scrollbars=yes, resizable=yes");
 		} 	
 		//주소입력창
-		function jusoCallBack(roadFullAddr,roadAddrPart1,addrDetail,roadAddrPart2, zipNo){ 
+		function jusoCallBack(roadFullAddr){ 
 			// 2017년 2월 제공항목이 추가되었습니다. 원하시는 항목을 추가하여 사용하시면 됩니다. 
 			document.form.roadFullAddr.value = roadFullAddr; 
-			document.form.roadAddrPart1.value = roadAddrPart1; 
-			document.form.roadAddrPart2.value = roadAddrPart2; 
-			documentform.addrDetail.value = addrDetail; 
-			document.form.zipNo.value = zipNo; 
 		};
     </script>
    

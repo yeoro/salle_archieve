@@ -75,7 +75,7 @@
 	    <p>
 	    	<p>
 	    		<!-- <form id="form" name="form" method="post"> -->
-		    		<input type="button" onclick="goPopup();" value="주소검색">
+		    		<input type="button" onclick="goPopup()" value="주소검색">
 		    </p>
 					우편번호<input type="text" id="zipNo" name="zipNo" /><br>
 				    전체주소 <input type="text" id="roadFullAddr" name="roadFullAddr" /><br>
