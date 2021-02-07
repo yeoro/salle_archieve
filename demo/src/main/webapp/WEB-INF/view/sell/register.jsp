@@ -21,10 +21,6 @@
 <body>
 
 	<%@include file="../home.jsp" %>
-	
-	<%
-		String test = request.getParameter("test");
-	%>
 
 
     <form:form action="done" method="post" enctype="multipart/form-data" modelAttribute="product">
@@ -77,8 +73,8 @@
 	    	<h2>거래지역</h2>
 	    </p>
 	    <p>
-		    <input type="text" id="roadFullAddr" name="roadFullAddr" placeholder="전체주소"/>	    
-	    	<button onclick="goPopup()">주소검색</button>
+		<input type="button" id="button" onclick="daumPostcode()" value="주소검색"><br>
+		<form:input type="text" id="addr" placeholder="주소" width="200" path="pr_region"/>
 	    </p>
     </section>
     
@@ -105,6 +101,9 @@
     
     <!-- Javascript -->
     <!-- <script type="text/javascript" scr="/resources/static/js/sell.js"></script> -->
+    <!-- Daum 주소 api -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js">
+    </script>
     <script type="text/javascript">
     
     var img_count = 1;
@@ -174,17 +173,25 @@
 	    	
 	    	$('#pr_price').val(commaX);
 	    }
-
-	//pr_region
-	function goPopup() {
+		
+	//daum 주소 api
+   	function daumPostcode() {
+   		
+   		new daum.Postcode({
 			
-			var pop = window.open("/prac/region.jsp","pop","width=570, height=420, scrollbars=yes, resizable=yes");
-		} 	
-		//주소입력창
-		function jusoCallBack(roadFullAddr){ 
-			// 2017년 2월 제공항목이 추가되었습니다. 원하시는 항목을 추가하여 사용하시면 됩니다. 
-			document.form.roadFullAddr.value = roadFullAddr; 
-		};
+   			oncomplete: function(data) {
+    		var addr = '';
+   				
+   			if (data.userSelectedType === 'R') {
+   				addr = data.roadAddress;
+   			} else {
+   				addr = data.jibunAddress; 
+  				}
+    		document.getElementById('addr').value = addr;
+  			}
+   		
+  		}).open();
+  	}
     </script>
    
 

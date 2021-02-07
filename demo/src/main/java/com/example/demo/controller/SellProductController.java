@@ -229,6 +229,12 @@ public class SellProductController {
 		
 		return "/prac/jusoPopup";
 	}
+
+	@RequestMapping(value= "/sell/daum", method=RequestMethod.GET)
+	public String jusoDaum() {
+		
+		return "/sell/daum";
+	}
 	
 	
 

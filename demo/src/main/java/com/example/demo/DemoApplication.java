@@ -1,3 +1,5 @@
+
+
 package com.example.demo;
 
 import java.util.Locale;
@@ -43,7 +45,13 @@ public class DemoApplication {
 		return messageSource;
 	}
 
-    public static void main(String[] args) {
+//    @Override
+//	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+//		return builder.sources(DemoApplication.class);
+//	}
+
+
+	public static void main(String[] args) {
     	SpringApplication.run(DemoApplication.class, args);
     }
 
