@@ -12,25 +12,14 @@ textarea {
 	color: red;
 }
 
-/* ul */
-.wrap_img {
+.wrap_pr_img {
 	display: flex;
 	width: 800px;
 }
 
-/* li */
-.wrap_img_li {
+div[class^="pr_img"] {
+	display: block;
 	position: relative;
-	width: 150px;
-	height: 100px;
-	margin-right: 20px; 
-	padding: 0;
-}
-
-/* img */
-#pr_img {
-	width: 100vm;
-	height: 100vm;
 }
 
 /* button */
@@ -41,6 +30,7 @@ textarea {
 	height: 20px;
 	position: absolute;
 	top: 0;
+	left: 0;
 	border-style: none;
 	border-radius: 20px;
 	background-color: rgba(255,255,255,0.5);

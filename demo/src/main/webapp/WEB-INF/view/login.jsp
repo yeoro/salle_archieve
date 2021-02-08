@@ -12,7 +12,7 @@
 <body>
 
 	<div>
-    <form:form action="/" method="post" modelAttribute="login">
+    <form:form action="/login/done" method="post" modelAttribute="login">
     <p>
         <label>
         이메일:

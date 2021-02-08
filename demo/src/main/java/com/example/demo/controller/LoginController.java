@@ -32,7 +32,7 @@ public class LoginController {
         return "login";
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "/login/done", method = RequestMethod.POST)
     public String loginHandle(@ModelAttribute Login login, HttpSession httpSession, Model model) {
 
     	Login loginInfo;
@@ -47,10 +47,7 @@ public class LoginController {
             return "login";
         }
         
-        //model.addAttribute("login", loginInfo);
-
-		model.addAttribute("productList", productService.getProductList());
-
+        model.addAttribute("productList", productService.getProductList());
         return "main";
     }
 

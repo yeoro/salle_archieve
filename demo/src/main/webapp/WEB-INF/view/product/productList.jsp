@@ -15,7 +15,7 @@
 <%@include file="../home.jsp" %>
 
 	<article class="article_product">
-	<c:forEach var="product" items="${productList}">
+	<c:forEach var="product" items="${productListInfo}">
 	<div class="container_product">
 	<a href="<c:url value="/productInfo/${product.pr_id}"/>">
 		<div class="div_pr_img">

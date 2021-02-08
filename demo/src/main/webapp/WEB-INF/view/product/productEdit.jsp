@@ -24,22 +24,19 @@
 
 
     <form:form action="save" method="post" enctype="multipart/form-data" modelAttribute="product">
-    
+    <form:input type="hidden" value="${product.pr_id}" id="pr_id" path="pr_id"/>
     <section class="pr_img">
   		<p>	
     		<label for="img"><h2>상품 이미지</h2></label>
     	</p>
-    	<div id="pr_img">
-	    	<input type="file" id="img" name="pr_img_files"/>	 
-	    		<ul class="wrap_img">
-	    		<li class="wrap_img_li">
-	    		<img id="pr_img" src="${product.pr_img_1}"/>
-	    		<button type="button" class="button_img"></button>
-	    		</li>
-	    		<li class="wrap_img_li">
-	    		<img id="pr_img" src="${product.pr_img_1}"/>	    		
-	    		</li>   	
-	    		</ul>
+	    	<input type="file" id="img" name="pr_img_files"/>	    	
+	        	<div class="wrap_pr_img">
+		    	<c:forEach var="img" items="${imgList}" varStatus="loop">			
+			    	<div class="pr_img_${loop.index}">
+			    		<img id="pr_img" src="${img}" width="150px" height="150px"/>
+			    		<button type="button" class="button_img" value="pr_img_${loop.index}" onclick="deleteImg(this.value)"></button>
+			    	</div>
+		    	</c:forEach>
     	</div>
 	    <%=request.getRealPath("/") %>
 	    <input id="upload" type="button" value="업로드" onclick="fileUpload()"/>
@@ -57,22 +54,22 @@
     <section class="pr_category">
 	    <p>
 	    	<h2>상품 카테고리</h2>
-		    <form:select id="pr_category" name="pr_category" required="required" path="pr_category">
-		    	<form:option value="digital"><spring:message code="digital"/></form:option>
-		    	<form:option value="furniture"><spring:message code="furniture"/></form:option>
-		    	<form:option value="kids"><spring:message code="kids"/></form:option>
-		    	<form:option value="lifestyle"><spring:message code="lifestyle"/></form:option>
-		    	<form:option value="sports"><spring:message code="sports"/></form:option>
-		    	<form:option value="womengoods"><spring:message code="womengoods"/></form:option>
-		    	<form:option value="womenclothes"><spring:message code="womenclothes"/></form:option>
-		    	<form:option value="menclothes"><spring:message code="menclothes"/></form:option>
-		    	<form:option value="games"><spring:message code="games"/></form:option>
-		    	<form:option value="beauty"><spring:message code="beauty"/></form:option>
-		    	<form:option value="pets"><spring:message code="pets"/></form:option>
-		    	<form:option value="books"><spring:message code="books"/></form:option>
-		    	<form:option value="plants"><spring:message code="plants"/></form:option>
-		    	<form:option value="etc"><spring:message code="etc"/></form:option>
-			</form:select>
+		    <select id="pr_category" name="pr_category" required>
+		    	<option value="digital"><spring:message code="digital"/></option>
+		    	<option value="furniture"><spring:message code="furniture"/></option>
+		    	<option value="kids"><spring:message code="kids"/></option>
+		    	<option value="lifestyle"><spring:message code="lifestyle"/></option>
+		    	<option value="sports"><spring:message code="sports"/></option>
+		    	<option value="womengoods"><spring:message code="womengoods"/></option>
+		    	<option value="womenclothes"><spring:message code="womenclothes"/></option>
+		    	<option value="menclothes"><spring:message code="menclothes"/></option>
+		    	<option value="games"><spring:message code="games"/></option>
+		    	<option value="beauty"><spring:message code="beauty"/></option>
+		    	<option value="pets"><spring:message code="pets"/></option>
+		    	<option value="books"><spring:message code="books"/></option>
+		    	<option value="plants"><spring:message code="plants"/></option>
+		    	<option value="etc"><spring:message code="etc"/></option>
+			</select>
 	    </p>
     </section>
     
@@ -81,18 +78,8 @@
 	    	<h2>거래지역</h2>
 	    </p>
 	    <p>
-	    	<p>
-	    		<!-- <form id="form" name="form" method="post"> -->
-		    		<input type="button" onclick="goPopup();" value="주소검색">
-		    </p>
-					우편번호<input type="text" id="zipNo" name="zipNo" /><br>
-				    전체주소 <input type="text" id="roadFullAddr" name="roadFullAddr" /><br>
-				    도로명주소 <form:input type="text" id="roadAddrPart1" name="pr_region" path="pr_region"/>
-				    <form:errors id="errors" path="pr_region"/>
-				    <br>
-					상세주소<input type="text" id="addrDetail" name="addrDetail" /><br> 
-					참고주소<input type="text" id="roadAddrPart2" name="roadAddrPart2" /><br>
-				<!--</form> -->
+		<input type="button" id="button" onclick="daumPostcode()" value="주소검색"><br>
+		<form:input type="text" id="addr" placeholder="주소" width="200" path="pr_region"/>
 	    </p>
     </section>
     
@@ -108,50 +95,53 @@
 	    <p>
 	    <label>
 	    	<h2>상품 설명</h2>
-	   		<form:textarea id="pr_detail" placeholder="상품 설명을 입력하세요. 최대 500자" maxlength="1000" rows="10" cols="80" name="pr_detail" path="pr_detail"></form:textarea>
+	   		<textarea id="pr_detail" placeholder="상품 설명을 입력하세요. 최대 500자" maxlength="1000" rows="10" cols="80" name="pr_detail" ></textarea>
 		    <form:errors id="errors" path="pr_detail"/>
 		</label>
 	    </p>
     </section>
-    
-	<input type="submit" value="저장하기" /> 
+    <a href="javascript:void(0);" onclick="fileUpload()">
+		<input type="submit" value="등록하기" />
+	</a>
     </form:form>
     
     <!-- Javascript -->
     <!-- <script type="text/javascript" scr="/resources/static/js/sell.js"></script> -->
-    <script>
+    <!-- Daum 주소 api -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js">
+    </script>
+    <script type="text/javascript">
     
-    var img_count = 1;
+    var img_count = 10;
     var formData = new FormData();
 	    
     //pr_img
 	//input 파일첨부 버튼 클릭하면 실행되는 change 메서드
-	$(documnet).ready(function fileadd() {
+	$("#img").change(function fileadd() {
 		var reader = new FileReader;
 	//이미지 파일 정보와 화면출력을 위해 <img> 태그를 변수로 만듦
-	var i = 1;  
-		while(i < 6) {
-			switch (i) {
-			case 1:
-				if (${product.pr_img_1} != null) {
-					var str = "<img id='img_1' src='${product.pr_img_1}'/>";
-				}
-				break;
-			}
-			
-			i++;
-		}
+		var str = "<div class='pr_img_"+ (img_count)+"'><img id='img_"+(img_count)+"' src=''/><button type='button' class='button_img' value='pr_img_"+(img_count)+"' onclick='deleteImg(this.value)'></button></div>";
+	//파일 경로에 넣기 위해 String으로 변환시켜줌
+		var img_count_string = img_count.toString();
 		
 	//jQuery append 메서드를 사용해 <div id="pr_img"> 안에 <img> 태그 변수를 추가해줌
-		$("#pr_img").append(str);
+		$(".wrap_pr_img").append(str);
+	
+	//formdata에 append
 	
 	//onload는 파일이 업로드 완료된 시점에 function을 발생시키는 메서드
 	//<img src=""> 사용자가 업로드한 이미지 파일 경로를 src로 저장해줌(data.target.result) 
-		var img_count_string = img_count.toString();
 		reader.onload = function(data) {
 	//태그 안의 속성을 입력할 수 있는 jQuery attr 메서드를 사용 
-			$('#img_' + img_count_string).width(150);
+			$('#img_' + img_count_string).attr('src', data.target.result).width(150).height(150);
 		};
+		
+	/*
+    	<div class="pr_img_${loop.index}" id="${img}">
+   		<button type="button" class="button_img" value="pr_img_${loop.index}" onclick="deleteImg(this.value)"></button>
+   		</a>
+   		</div>
+	*/
 		
 	//화면에 이미지를 출력해주는 FileReader 객체 인스턴스 reader.readAsDataURL();
 	//this.files는 <input type="file">을 통해 업로드한 파일의 정보를 저장하고 있는 배열이다.
@@ -196,21 +186,51 @@
 	    	
 	    	$('#pr_price').val(commaX);
 	    }
-
-	//pr_region
-	function goPopup() {
+		
+	//daum 주소 api
+   	function daumPostcode() {
+   		
+   		new daum.Postcode({
 			
-			var pop = window.open("/sell/region","pop","width=570, height=420, scrollbars=yes, resizable=yes");
-		} 	
-		//주소입력창
-		function jusoCallBack(roadFullAddr,roadAddrPart1,addrDetail,roadAddrPart2, zipNo){ 
-			// 2017년 2월 제공항목이 추가되었습니다. 원하시는 항목을 추가하여 사용하시면 됩니다. 
-			document.form.roadFullAddr.value = roadFullAddr; 
-			document.form.roadAddrPart1.value = roadAddrPart1; 
-			document.form.roadAddrPart2.value = roadAddrPart2; 
-			documentform.addrDetail.value = addrDetail; 
-			document.form.zipNo.value = zipNo; 
-		};
+   			oncomplete: function(data) {
+    		var addr = '';
+   				
+   			if (data.userSelectedType === 'R') {
+   				addr = data.roadAddress;
+   			} else {
+   				addr = data.jibunAddress; 
+  				}
+    		document.getElementById('addr').value = addr;
+  			}
+   		
+  		}).open();
+  	}
+	
+	//delete img
+	function deleteImg(val) {
+		var pr_id = document.getElementById('pr_id').value;
+		console.log("ajaxDelete running");
+		
+		$.ajax({
+			url:'/ajax/img/delete',
+			type: 'POST',
+			data: JSON.stringify({
+				pr_img: val,
+				pr_id: pr_id
+			}),
+			dataType: 'json',
+			contentType: 'application/json',
+			success: function(data) {
+				console.log('ajax img delete success')
+				}
+			});
+		
+			formData.delete(val);
+
+			console.log('deleteImg(): ' + val);
+			$('.' + val).remove();	
+		
+		}
     </script>
    
 

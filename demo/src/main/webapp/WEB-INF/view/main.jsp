@@ -15,17 +15,17 @@
 <%@include file="home.jsp" %>
 
 	<article class="article_product">
-	<c:forEach var="product" items="${productList}">
+	<c:forEach var="productHome" items="${productList}">
 	<div class="container_product">
-	<a href="<c:url value="/productInfo/${product.pr_id}"/>">
+	<a href="<c:url value="/productInfo/${productHome.pr_id}"/>">
 		<div class="div_pr_img">
-			<img src="${product.pr_img_1}" class="pr_img"/></td>
+			<img src="${productHome.pr_img_1}" class="pr_img"/></td>
 		</div>
 		<div class="div_pr_title">
-			${product.pr_title}
+			${productHome.pr_title}
 		</div>	
 		<div class="div_pr_price">
-			${product.pr_price}원
+			${productHome.pr_price}원
 		</div>
 	</div>
 	</a>

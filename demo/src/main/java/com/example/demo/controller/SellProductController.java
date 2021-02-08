@@ -3,7 +3,9 @@ package com.example.demo.controller;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -155,17 +158,68 @@ public class SellProductController {
 	//profile에서 판매글 수정, 삭제하기
 	@RequestMapping(value= "/product/{pr_id}/edit", method = RequestMethod.GET)
 	public String profileEdit(Model model, @PathVariable int pr_id) {
-		
+				
 		Product product = productService.getProductInfo(pr_id);
+		//get ProductInfo and get img list
+		List<String> imgList = new ArrayList<String>();
+		for (int i = 1; i < 6; i++) {
+			switch (i) {
+			case 1:
+				String img1 = product.getPr_img_1();				
+				if(img1 != null)
+					imgList.add(img1);
+				break;
+			case 2:
+				String img2 = product.getPr_img_2();				
+				if(img2 != null)
+					imgList.add(img2);
+				break;
+			case 3:
+				String img3 = product.getPr_img_3();				
+				if(img3 != null)
+					imgList.add(img3);
+				break;
+			case 4:
+				String img4 = product.getPr_img_4();				
+				if(img4 != null)
+					imgList.add(img4);
+				break;
+			case 5:
+				String img5 = product.getPr_img_5();				
+				if(img5 != null)
+					imgList.add(img5);
+				break;
+
+			default:
+				break;
+			}
+		}
 		
 		model.addAttribute("product", product);
+		model.addAttribute("imgList", imgList);
 				
 		return "product/productEdit"; 
 	}
 	
-	@RequestMapping(value= "/product/{pr_id}/save", method= RequestMethod.POST)
-	public String profileEditDone(@ModelAttribute("product") Product product, Errors errors) {
+	
+	@RequestMapping(value="/ajax/img/delete", method=RequestMethod.POST)
+	public void ajaxDeleteImg(@RequestBody String json) {
 		
+		JSONObject jsn = new JSONObject(json);
+		
+		String pr_id = jsn.getString("pr_id");
+		String pr_img_delete = jsn.getString("pr_img");
+		
+		
+		
+	}
+	
+	@RequestMapping(value= "/product/{pr_id}/save", method= RequestMethod.POST)
+	public String profileEditDone(@ModelAttribute("product") Product product, Errors errors,
+			HttpSession httpSession) {
+		
+    	Login login = (Login) httpSession.getAttribute("login");
+    	product.setPr_email(login.getEmail());
     	product.setPr_title_alias(product.getPr_title().replaceAll("\s", ""));
     	
 		//ajax로 받은 img_file 정보를 넘겨줌 

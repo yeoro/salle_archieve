@@ -82,9 +82,7 @@ public class ProductService implements ProductMapper {
 	@Override
 	public Product getProductInfo(int pr_id) {
 		
-		Product productInfo = productMapper.getProductInfo(pr_id);
-		
-		return productInfo;
+		return productMapper.getProductInfo(pr_id);
 	}
 
 	@Override

@@ -56,7 +56,7 @@ public class ProductInfoController {
 	@RequestMapping(value = "/productInfo/list", method = RequestMethod.GET)
 	public String productListGet(Model model) {
 		
-		model.addAttribute("productList", productService.getProductList());
+		model.addAttribute("productListInfo", productService.getProductList());
 		
 		return "product/productList";
 	}
