@@ -84,4 +84,31 @@
     	WHERE pr_id = #{pr_id};
     </delete>
     
+    <update id="deleteImg1">
+    	UPDATE PRODUCT
+    	SET PR_IMG_1 = null
+    	WHERE PR_ID = #{pr_id};
+    </update>
+    <update id="deleteImg2">
+    	UPDATE PRODUCT
+    	SET PR_IMG_2 = null
+    	WHERE PR_ID = #{pr_id};
+    </update>
+    <update id="deleteImg3">
+    	UPDATE PRODUCT
+    	SET PR_IMG_3 = null
+    	WHERE PR_ID = #{pr_id};
+    </update>
+    <update id="deleteImg4">
+    	UPDATE PRODUCT
+    	SET PR_IMG_4 = null
+    	WHERE PR_ID = #{pr_id};
+    </update>
+    <update id="deleteImg5">
+    	UPDATE PRODUCT
+    	SET PR_IMG_5 = null
+    	WHERE PR_ID = #{pr_id};
+    </update>
+    
+    
 </mapper>

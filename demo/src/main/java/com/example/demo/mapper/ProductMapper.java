@@ -18,6 +18,15 @@ public interface ProductMapper {
 	
 	void updateProduct(Product product);
 	
+	//void deleteImg(int pr_id, String pr_img);
+	
+	void deleteImg1(int pr_id);
+	void deleteImg2(int pr_id);
+	void deleteImg3(int pr_id);
+	void deleteImg4(int pr_id);
+	void deleteImg5(int pr_id);
+
+	
 	//ProductList를 가져옴
 	List<Product> getProductList();
 

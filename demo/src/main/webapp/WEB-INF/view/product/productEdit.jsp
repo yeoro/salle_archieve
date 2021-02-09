@@ -34,12 +34,10 @@
 		    	<c:forEach var="img" items="${imgList}" varStatus="loop">			
 			    	<div class="pr_img_${loop.index}">
 			    		<img id="pr_img" src="${img}" width="150px" height="150px"/>
-			    		<button type="button" class="button_img" value="pr_img_${loop.index}" onclick="deleteImg(this.value)"></button>
+			    		<button type="button" class="button_img" value="pr_img_${loop.index}" onclick="deleteImgEx(this.value)"></button>
 			    	</div>
 		    	</c:forEach>
     	</div>
-	    <%=request.getRealPath("/") %>
-	    <input id="upload" type="button" value="업로드" onclick="fileUpload()"/>
 	    <form:errors id="errors" path="pr_img_1"/>
     </section>
     
@@ -100,9 +98,7 @@
 		</label>
 	    </p>
     </section>
-    <a href="javascript:void(0);" onclick="fileUpload()">
-		<input type="submit" value="등록하기" />
-	</a>
+		<input type="submit" value="등록하기" onclick="fileUpload()"/>
     </form:form>
     
     <!-- Javascript -->
@@ -120,7 +116,7 @@
 	$("#img").change(function fileadd() {
 		var reader = new FileReader;
 	//이미지 파일 정보와 화면출력을 위해 <img> 태그를 변수로 만듦
-		var str = "<div class='pr_img_"+ (img_count)+"'><img id='img_"+(img_count)+"' src=''/><button type='button' class='button_img' value='pr_img_"+(img_count)+"' onclick='deleteImg(this.value)'></button></div>";
+		var str = "<div class='pr_img_"+ (img_count)+"'><img id='img_"+(img_count)+"' src=''/><button type='button' class='button_img' value='pr_img_"+(img_count)+"' onclick='deleteImgNew(this.value)'></button></div>";
 	//파일 경로에 넣기 위해 String으로 변환시켜줌
 		var img_count_string = img_count.toString();
 		
@@ -162,7 +158,7 @@
 	function fileUpload() {
 		
 		$.ajax({
-    		url:"/sell/ajax",
+    		url:"/sell/ajax/edit",
    			type: 'POST',
     		data: formData,
     			processData: false,
@@ -206,10 +202,10 @@
   		}).open();
   	}
 	
-	//delete img
-	function deleteImg(val) {
+	//delete img existing file
+	function deleteImgEx(val) {
 		var pr_id = document.getElementById('pr_id').value;
-		console.log("ajaxDelete running");
+		console.log("ajaxDelete running: " + pr_id);
 		
 		$.ajax({
 			url:'/ajax/img/delete',
@@ -225,9 +221,20 @@
 				}
 			});
 		
+			//formData.delete(val);
+
+			console.log('deleteImgEx(): ' + val);
+			$('.' + val).remove();	
+		
+		}
+
+	//delete img new file
+	function deleteImgNew(val) {
+		console.log("ajaxDelete running");
+		
 			formData.delete(val);
 
-			console.log('deleteImg(): ' + val);
+			console.log('deleteImgNew(): ' + val);
 			$('.' + val).remove();	
 		
 		}

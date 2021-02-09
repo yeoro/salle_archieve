@@ -110,6 +110,48 @@ public class ProductService implements ProductMapper {
 		productMapper.updateProduct(product);
 	}
 
+//	@Override
+//	public void deleteImg(int pr_id, String pr_img) {
+//		
+//		productMapper.deleteImg(pr_id, pr_img);
+//	}
+
+	@Override
+	public void deleteImg1(int pr_id) {
+		// TODO Auto-generated method stub
+		productMapper.deleteImg1(pr_id);
+		
+	}
+
+	@Override
+	public void deleteImg2(int pr_id) {
+		// TODO Auto-generated method stub
+		productMapper.deleteImg2(pr_id);
+		
+	}
+
+	@Override
+	public void deleteImg3(int pr_id) {
+		// TODO Auto-generated method stub
+		productMapper.deleteImg3(pr_id);
+		
+	}
+
+	@Override
+	public void deleteImg4(int pr_id) {
+		// TODO Auto-generated method stub
+		
+		productMapper.deleteImg4(pr_id);
+	}
+
+	@Override
+	public void deleteImg5(int pr_id) {
+		// TODO Auto-generated method stub
+		
+		productMapper.deleteImg5(pr_id);
+	}
+
+
 
 
 }
