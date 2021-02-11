@@ -23,7 +23,7 @@
 	<%@include file="../home.jsp" %>
 
 
-    <form:form action="done" method="post" enctype="multipart/form-data" modelAttribute="product">
+    <form:form action="done" method="post" enctype="multipart/form-data" id="form" modelAttribute="product">
     
     <section class="pr_img">
   		<p>	
@@ -92,11 +92,8 @@
 		    <form:errors id="errors" path="pr_detail"/>
 		</label>
 	    </p>
-    </section>
-    
-    <a href="javascript:void(0);" onclick="fileUpload()">
-		<input type="submit" value="등록하기" />
-	</a>
+    </section>   
+    	<input type="button" id="button" value="등록하기" onclick="fileUpload()"/>
     </form:form>
     
     <!-- Javascript -->
@@ -161,6 +158,8 @@
     		}); //end ajax
     		
     	formData.delete;
+    		
+    		$('#form').submit();
 	}
 
 	//pr_price
@@ -202,7 +201,7 @@
 			formData.delete(val);
 			console.log('deleteImg(): ' + val);
 			$('.' + val).remove();	
-		
+			
 		}
     </script>
    

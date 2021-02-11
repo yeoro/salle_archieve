@@ -10,18 +10,37 @@ a {
 }
 
 .container_pr_img {
-	width: 400px;
+	width: 500px;
 	height: 350px;
 	display: flex;
 	position: relative;
 }
 
 .div_pr_img {
-	width: 400px;
+	width: 500px;
 	height: 350px;
 	background-size: cover;
+	background-repeat: no-repeat;
 	animation: fade 0.5s;
 	display: none;
+}
+
+#imgButton {
+	cursor: pointer;
+}
+
+.button_img {
+	background-image: url(/resources/img/210211_salle_add.png);
+	background-size: 30px;
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	border-style: none;
+	border-radius: 20px;
+	background-color: rgba(255,255,255);
+	cursor: pointer;
 }
 
 .prev, .next {
