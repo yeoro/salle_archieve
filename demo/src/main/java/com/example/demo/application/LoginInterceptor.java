@@ -38,17 +38,28 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 
+    	if (modelAndView != null) {
     	//recreate session if session doesn't exist, if exist, retrieve the session
     	HttpSession session = request.getSession(true);
-    	//get model by HashMap if it exists
-    	ModelMap modelMap = modelAndView.getModelMap();
+    	//]
     	//get value Object key "login" from modelMap and modelAttributename "login" is added in Controller
-    	Object loginInter = modelMap.get("login");
+    	Object loginInter = modelAndView.getModel().get("login");
+    	Object messageAlert = modelAndView.getModel().get("messageAlert");
     			
     	if (loginInter != null) {
     		logger.info("새로운 로그인 성공");
     		session.setAttribute("login", loginInter);
     	}
+    	
+    	if (messageAlert != null) {
+    		logger.info("메시지 성공");
+    		session.setAttribute("messageAlert", messageAlert);
+    	}
+    } else {
+    	
+    }
+    	
+
     }
 
     @Override

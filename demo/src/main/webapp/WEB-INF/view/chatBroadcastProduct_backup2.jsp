@@ -17,7 +17,7 @@
 <body>
 	<div class="container">
 		<div class="title_text">
-			<h2>${chatRoomInfo.pr_title}</h2>
+			<h2>${pr_title}</h2>
 		</div>
 		<div class="row">	
 				<%--chatHistory와 member가 실시간 입력하는 메시지 출력 --%>
@@ -65,25 +65,18 @@
 		
 		<%-- invoke when DOM(Documents Object Model; HTML(<head>, <body>...etc) is ready --%>
 		$(document).ready(connect());
-		$(document).ready(ajaxChatRead());
 		
 		function connect() {
 			<%-- map URL using SockJS--%>
-			console.log("connected");
 			var socket = new SockJS('/broadcast');
 			var url = '/user/' + id + '/queue/messages';
 			<%-- webSocket 대신 SockJS을 사용하므로 Stomp.client()가 아닌 Stomp.over()를 사용함--%>
 			stompClient = Stomp.over(socket);
 			
-			console.log("connect ajaxRead");
-			
 			<%-- connect(header, connectCallback(==연결에 성공하면 실행되는 메서드))--%>
 			stompClient.connect({}, function() {
-				
-				console.log("connected STOMP");
-
 				<%-- url: 채팅방 참여자들에게 공유되는 경로--%>
-				<%-- callback(function()): 클라이언트가 서버(Controller broker로부터)로부터 메시지를 수신했을 때 실행 --%>
+				<%-- callback(function()): 클라이언트가 서버로부터 메시지를 수신했을 때(== STOMP send()가 실행되었을 때) 실행 --%>
 				stompClient.subscribe(url, function(output) {
 					<%-- JSP <body>에 append할 메시지 contents--%>
 					showBroadcastMessage(createTextNode(JSON.parse(output.body)));
@@ -96,7 +89,7 @@
 
 		};
 		
-		<%-- WebSocket broker 경로로 JSON형태 String 타입 메시지 데이터를 전송함 --%>
+		<%-- WebSocket broker 경로로 JSON 타입 메시지데이터를 전송함 --%>
 		function sendBroadcast(json) {
 			
 			stompClient.send("/app/broadcast", {}, JSON.stringify(json));
@@ -111,8 +104,7 @@
 				'sellerName': sellerName,
 				'buyerId': buyerId, 'sellerId': sellerId,
 				'pr_id': pr_id,
-				'senderName': senderName,
-				'senderId': buyerId
+				'senderName': senderName
 				});
 			$('#message').val("");
 		}
@@ -149,24 +141,29 @@
             $("#content").html($("#content").html() + message);
         }
 		
-
-		<%-- 읽음처리 --%>
-		function ajaxChatRead() {
-
-			console.log("hi");
+		<%--  --%>
+		function ajaxChatRoom() {
 			
 			$.ajax({
-				url:'/chatread/product/ajax',
+				url:'/addChatRoom/ajax',
 				type: 'POST',
 				data: JSON.stringify({
 					id: id,
-					buyerId: buyerId
+					pr_id: pr_id,
+					buyerId: buyerId,
+					sellerId: sellerId,
+					buyerName: buyerName,
+					sellerName: sellerName
 				}),
 				dataType: 'json',
-				contentType: 'application/json'
-			})
-
+				//magic setting resolved an error
+				contentType: 'application/json',
+				complete: function(data) {
+					console.log('jQuery ajax from submit complete');
+				}
+			});
 		}
+		
 
 	
 	</script>

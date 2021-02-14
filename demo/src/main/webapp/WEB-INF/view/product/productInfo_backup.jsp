@@ -17,12 +17,7 @@
 	<div class="container_pr_img">
 	<%-- <img>는 컨텐츠일 때 background-image와 중첩으로 쓰인다. 중요하기 때문 --%>
 		<a class="prev" onclick="button_click(-1)">&#10094</a>
-		<%--<button id="imgButton" onclick="imgPopup()">버튼</button>  --%>
-			<c:forEach var="img" items="${productInfoImg}" varStatus="loop">
-					<div class='div_pr_img' id='pr_img_${loop.index}' style='background-image: url("${img}")'>
-						<input type="button" value="" id="img" class="button_img" name="${img }" onclick="imgPopup(this.name)"/>
-					</div>
-			</c:forEach>
+				<img src="${product.pr_img_1}"/>
 		<a class="next" onclick="button_click(1)">&#10095</a>
 	</div>
 	
@@ -43,17 +38,17 @@
 		</div>
 		
 		<div class="buy_chat">
-		<form:form id="chatSubmit_form" action="/chatMessage" method="GET" modelAttribute="chatRoom">
+		<form id="chatSubmit_form" action="/chatMessage" method="GET">
 			<a href="javascript:{}" onclick="chatSubmit()">
-				<form:input type="hidden" path="sellerName" value="${nickName}"/>
-				<form:input type="hidden" path="pr_id" value="${product.pr_id}"/>
-				<form:input type="hidden" path="sellerId" value="${product.pr_email}"/>
-				<form:input type="hidden" path="pr_title" value="${product.pr_title}"/>
+				<input type="hidden" name="nickName" value="${nickName}"/>
+				<input type="hidden" name="pr_id" value="${product.pr_id}"/>
+				<input type="hidden" name="pr_email" value="${product.pr_email}"/>
+				<input type="hidden" name="pr_title" value="${product.pr_title}"/>
 				<button id="btn_chat">
 					채팅으로 거래하기
 				</button>
 			</a>
-		</form:form>
+		</form>
 		</div>
 	</div>
 	
@@ -92,11 +87,50 @@
 		
 	 <script type="text/javascript">
 	 	//div_pr_img 생성
-		 	var currSlide = 1;
-	 		showSlide(currSlide);
-		 	
+	 	$(document).ready(function imgAdd() {
+	 		var i = 1;
+		 	for (i = 1; i < 6; i++) {
+		 		var iStr = String(i);
+		 		console.log(iStr);
+		 		switch (i) {
+					case 1:
+	 					var divStr1 = `<div class='div_pr_img' id='pr_img_1' style='background-image: url(${product.pr_img_1})'></div>`;
+							
+	 						$(".container_pr_img").append(divStr1);
+						 	showSlide(currSlide);
+						break;
+					case 2:
+	 					var divStr2 = `<div class='div_pr_img' id='pr_img_2' style='background-image: url(${product.pr_img_2})'></div>`;
+						if('${product.pr_img_2}' != '') {
+							$(".container_pr_img").append(divStr2);
+						}
+						break;
+					case 3:
+	 					var divStr3 = `<div class='div_pr_img' id='pr_img_3' style='background-image: url(${product.pr_img_3})'></div>`;
+						if('${product.pr_img_3}' != '') {
+							$(".container_pr_img").append(divStr3);
+						}
+						break;
+					case 4:
+	 					var divStr4 = `<div class='div_pr_img' id='pr_img_4' style='background-image: url(${product.pr_img_4})'></div>`;
+						if('${product.pr_img_4}' != '') {
+							$(".container_pr_img").append(divStr4);
+						}
+						break;
+					case 5:
+	 					var divStr5 = `<div class='div_pr_img' id='pr_img_5' style='background-image: url(${product.pr_img_5})'></div>`;
+						if('${product.pr_img_5}' != '') {
+							$(".container_pr_img").append(divStr5);
+						}
+						break;
+						}
+		 		}
+		 	});//end imgAdd()
 		 	
 		 	//이미지 슬라이더
+		 	var currSlide = 1;
+		 	showSlide(currSlide);
+		 	
 		 	function button_click(num) {
 		 		showSlide((currSlide += num))
 		 	}
@@ -115,17 +149,10 @@
 		 		} 
 		 		slides[currSlide - 1].style.display="block";
 		 	}
-		 	
-		 	function imgPopup(val) {
-		 		
-		 		console.log("test");
-		 		window.open(val, "popup",
-		 	           "resizable,scrollbars,status");
-		 	}
 
 
 
-	</script>
+		 	</script>
 
 </body>
 </html>

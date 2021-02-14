@@ -85,13 +85,12 @@
 						<button id="link_logininfo" >  
 							${login.getNickName()}님
 						</button>
-						<input type="hidden" value="${login.getEmail()}" id="emailInput">
 						<a href="<c:url value="/profile/${login.getNickName()}"/>">
 							프로필
 						</a>&nbsp;
 						<a href="<c:url value="/chatList"/>">
 							채팅
-							<span id="messageAlert"></span>
+							<span id="messageAlert">${messageAlert}</span>
 						</a>
 					<div class="member-loggedin">
 						<ul id="link_logintoggle">
@@ -101,32 +100,24 @@
 								</a>
 							</li>				
 						</ul>
-							<script type="text/javascript">
-
+							<script>
 									$("#link_logininfo").click(function() {
 										$("#link_logintoggle").toggle();
 									});
-
-									var loginEmail = document.getElementById('emailInput').value;
-										console.log("loginEmail: " + loginEmail);
 									
 									$(document).ready(function() {
 									
-										if (loginEmail != null) {
-											getInfiniteUnread();
-										}
-									});
-									
+										
+									})
 									
 									function getUnread() {
+										var loginEmail = ${login.getEmail()};
 										$.ajax({
-											url: "/chatUnread/ajax",
+											
 											type: "POST",
-											data: JSON.stringify({
-												email: loginEmail
-											}) ,
-											dataType: "json",
-											contentType: "application/json",
+											data: {
+												email: loginEmail;
+											},
 											success: function(result) {
 												if (result >= 1) {
 													showUnread(result);
@@ -138,13 +129,9 @@
 									}
 									
 									function getInfiniteUnread() {
-										setInterval(() => {
+										setInterval(function() => {
 											getUnread();
-										}, 500);
-									}
-									
-									function showUnread(result) {
-										$('#messageAlert').html(result);
+										}, 4000);
 									}
 									
 									

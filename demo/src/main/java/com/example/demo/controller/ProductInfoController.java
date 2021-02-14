@@ -31,8 +31,11 @@ public class ProductInfoController {
 	
 	//TODO: productInfo 뒤 seq 지정해야한다.
 	@RequestMapping(value = "/productInfo/{pr_id}", method = RequestMethod.GET)
-	public String productInfoGet(Model model, @PathVariable int pr_id, 
-			@ModelAttribute("chatRoom") ChatRoom chatRoom) {		
+	public String productInfoGet(Model model, @PathVariable int pr_id) {		
+		//chatRoom ModelAttribute
+		ChatRoom chatRoom = new ChatRoom();
+		model.addAttribute("chatRoom", chatRoom);
+		
 		
 		//.jsp에서 ${product.pr_title}
 		Product productInfo = productService.getProductInfo(pr_id);

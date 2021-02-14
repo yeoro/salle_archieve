@@ -107,7 +107,7 @@ html, body {
 
 
 div[class="category-list"] {
-	position: absolute; /*½ºÅ©·ÑÇØµµ °íÁ¤½ÃÄÑÁÜ*/
+	position: absolute; /*ï¿½ï¿½Å©ï¿½ï¿½ï¿½Øµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 	width: 200px;
 	height: 100vh;
 	padding-top: 60px;
@@ -115,8 +115,8 @@ div[class="category-list"] {
 	background-color: rgb(153, 204, 255,0.6);
 	top: 0;
 	left: -300px;
-	z-index: 1; /*¿ì¼±¼øÀ§ 0¼øÀ§´Â ¹öÆ°*/
-	transition: all .35s; /*º¯È­°ª¿¡ µû¶ó ¸ð¼Ç*/
+	z-index: 1; /*ï¿½ì¼±ï¿½ï¿½ï¿½ï¿½ 0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°*/
+	transition: all .35s; /*ï¿½ï¿½È­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½*/
 }
 
 #categoryicon:checked + label + .category-list {
@@ -197,7 +197,7 @@ input[id="searchWord"] {
 .member-loggedin {
 	position: absolute;
 	top: 5;
-	margin-left: 0px;
+	margin-left: 25px;
 }
 
 #link_logininfo {
@@ -208,6 +208,12 @@ input[id="searchWord"] {
 
 #link_logintoggle {
 	display: none;
+}
+
+/* chat alert*/
+#messageAlert {
+	color: red;
+	font-weight: bold;
 }
 
 

@@ -14,5 +14,5 @@ public class WebserviceConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginInterceptor())
                 .addPathPatterns("/**")
                 .excludePathPatterns("/register/**", "/login");
-       }
+    }
 }

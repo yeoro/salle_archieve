@@ -10,114 +10,150 @@
 <title>Web socket STOMP SockJS Example</title>
 	<!-- jQuery -->
 	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-	<link rel="stylesheet" href="/resources/css/chatBroadcastProduct.css">
+		<link rel="stylesheet" href="/resources/css/chatBroadcastChatRoom.css">
 	
 
 </head>
 <body>
 	<div class="container">
 		<div class="title_text">
-			<h2>${chatRoomInfo.pr_title}</h2>
+			<h2>${pr_title}</h2>
 		</div>
-		<div class="row">	
-				<%--chatHistory와 member가 실시간 입력하는 메시지 출력 --%>
-				<div id="content">
-					<c:forEach var="chatRoom" items="${chatHistory}">
-						<p>
-							<span id="chatRoomSenderName">${chatRoom.senderName}</span><br>
-							<span id="chatRoomContent">${chatRoom.content}</span><br>
-							<span id="chatRoomSendTime">${chatRoom.sendTime}</span><br>
-						</p>	
-					</c:forEach>
+		<div class="row">
+			<div class="col_6">
+				<div class="row_3">
+					<div class="input_group">
+						
+					<!-- 
+						<div class="btn_group">
+							<button type="button" id="connect" class="btn btn-sm btn-outline-secondary" onclick="connect()">connect</button>
+							<button type="button" id="disconnect" class="btn btn-sm btn-outline-secondary" onclick="disconnect()" disabled>disconnect</button>
+						</div>
+					 -->
+						 
+					</div>				
+				</div>				
+				<div class="col_6">
+					<div id="content">
+						<div id="content">
+							<c:forEach var="chatRoom" items="${chatHistory}">
+								<p>
+									<span id="chatRoomSenderName">${chatRoom.senderName}</span><br>
+									<span id="chatRoomContent">${chatRoom.content}</span><br>
+									<span id="chatRoomSendTime">${chatRoom.sendTime}</span><br>
+								</p>	
+							</c:forEach>
+						</div>
+					</div>
+					<!-- 
+					<div>
+						<span class="float-right">
+							<button id="clear" class="btn btn-primary" onclick="clearBroadcast()" style="display: none;">Clear</button>				
+						</span>
+					</div>
+					-->
 				</div>
-				<%--메시지 입력창과 보내기 버튼 --%>
 				<div class="row_3">
 					<div class="input_group" id="sendMessage">
 						<input type="text" placeholder="Message" id="message" class="form_control"/>
 						<div class="input_group_append">
 							<button id="send" class="btn btn-primary" onclick="send()">보내기</button>
-							<input type="hidden" value="${login.getNickName()}" id="buyerName"/>
-							<input type="hidden" value="${login.getEmail()}" id="buyerId"/>
-							<input type="hidden" value="${chatRoomInfo.pr_id}" id="pr_id"/>
-							<input type="hidden" value="${chatRoomInfo.sellerId}" id="sellerId"/>
-							<input type="hidden" value="${chatRoomInfo.sellerName}" id="sellerName"/>						
-							<input type="hidden" value="${chatRoomInfo.id}" id="id"/>						
+							<input type="hidden" value="${login.getNickName()}" id="senderName"/>
+							<input type="hidden" value="${login.getEmail()}" id="senderId"/>
+							<input type="hidden" value="${id}" id="id"/>					
+							<input type="hidden" value="${pr_id}" id="pr_id"/>					
+							<input type="hidden" value="${buyerId}" id="buyerId"/>					
+							<input type="hidden" value="${sellerId}" id="sellerId"/>					
 						</div>					
 					</div>				
 				</div>
 			</div>
+		</div>
 	</div>
 	
-	<%-- STOMP와 sockjs webjars import --%>
+	
 	<script src="/webjars/stomp-websocket/2.3.3-1/stomp.js" type="text/javascript"></script>
 	<script src="/webjars/sockjs-client/1.1.2/sockjs.js" type="text/javascript"></script>
 	
 	<script type="text/javascript">
 	
 		var stompClient = null;
-		var buyerName = $('#buyerName').val();
+		var senderName = $('#senderName').val();
+		var senderId = $('#senderId').val();
+		var sellerId = $('#sellerId').val();
 		var buyerId = $('#buyerId').val();
 		var pr_id = $('#pr_id').val();
-		var sellerName = $('#sellerName').val();
-		var sellerId = $('#sellerId').val();	
-		var senderName = $('#buyerName').val();
 		var id = $('#id').val();
 		
-		<%-- invoke when DOM(Documents Object Model; HTML(<head>, <body>...etc) is ready --%>
+/*
+		function setConnected(connected) {		
+			$('#connect').prop('disabled', connected);
+			$('#disconnect').prop('disabled', !connected);
+			if (connected) {
+				$('#sendMessage').show();
+			} else {
+				$('#sendMessage').hide();				
+			}
+		};
+*/
+		
 		$(document).ready(connect());
-		$(document).ready(ajaxChatRead());
 		
 		function connect() {
-			<%-- map URL using SockJS--%>
-			console.log("connected");
 			var socket = new SockJS('/broadcast');
 			var url = '/user/' + id + '/queue/messages';
-			<%-- webSocket 대신 SockJS을 사용하므로 Stomp.client()가 아닌 Stomp.over()를 사용함--%>
 			stompClient = Stomp.over(socket);
-			
-			console.log("connect ajaxRead");
-			
-			<%-- connect(header, connectCallback(==연결에 성공하면 실행되는 메서드))--%>
-			stompClient.connect({}, function() {
-				
-				console.log("connected STOMP");
+			ajaxChatRead(id, senderId);
 
-				<%-- url: 채팅방 참여자들에게 공유되는 경로--%>
-				<%-- callback(function()): 클라이언트가 서버(Controller broker로부터)로부터 메시지를 수신했을 때 실행 --%>
+			
+			stompClient.connect({}, function() {
 				stompClient.subscribe(url, function(output) {
-					<%-- JSP <body>에 append할 메시지 contents--%>
+					console.log("broadcastMessage working");
 					showBroadcastMessage(createTextNode(JSON.parse(output.body)));
 				});
+						//setConnected(true);				
 				}, 
-					<%-- connect() 에러 발생 시 실행--%>
 						function (err) {
 							alert('error' + err);
 			});
 
 		};
 		
-		<%-- WebSocket broker 경로로 JSON형태 String 타입 메시지 데이터를 전송함 --%>
+/*
+		function disconnect() {
+			
+			if(stompClient!= null) {
+				
+				stompClient.disconnect(function() {
+					console.log('disconnected...');
+					setConnected(false);
+				});
+			}
+		}
+*/
+		
+		
+		
 		function sendBroadcast(json) {
 			
 			stompClient.send("/app/broadcast", {}, JSON.stringify(json));
 		}
 		
-		<%-- 보내기 버튼 클릭시 실행되는 메서드--%>
 		function send() {
+			//ajaxChatRoom();
 			var content = $('#message').val();
 			sendBroadcast({
 				'id': id,
-				'buyerName': buyerName, 'content': content,
-				'sellerName': sellerName,
-				'buyerId': buyerId, 'sellerId': sellerId,
-				'pr_id': pr_id,
 				'senderName': senderName,
-				'senderId': buyerId
+				'content': content,
+				'pr_id': pr_id,
+				'buyerId': buyerId,
+				'senderId': senderId,
+				'sellerId': sellerId
 				});
 			$('#message').val("");
 		}
 		
-		<%-- 메시지 입력 창에서 Enter키가 보내기와 연동되도록 설정 --%>
 		var inputMessage = document.getElementById('message'); 
 		inputMessage.addEventListener('keyup', function enterSend(event) {
 			
@@ -130,7 +166,6 @@
 			}
 		});
 		
-		<%-- 입력한 메시지를 HTML 형태로 가공 --%>
 		function createTextNode(messageObj) {
 			console.log("createTextNode");
 			console.log("messageObj: " + messageObj.content);
@@ -143,31 +178,36 @@
             ']</div></p>';
         }
 		
-		<%-- HTML 형태의 메시지를 화면에 출력해줌 --%>
-		<%-- 해당되는 id 태그의 모든 하위 내용들을 message가 추가된 내용으로 갱신해줌 --%>
 		function showBroadcastMessage(message) {
             $("#content").html($("#content").html() + message);
         }
 		
+		function clearBroadcast() {
+			$('#content').html("");
+		}
+		
 
+		
 		<%-- 읽음처리 --%>
-		function ajaxChatRead() {
-
-			console.log("hi");
-			
+		function ajaxChatRead(id, reader) {
+			console.log("ajaxChatread");
+			var flag = "";
+			if (reader == buyerId) {
+				flag = "buy";
+			} else {
+				flag = "sell";
+			}
 			$.ajax({
-				url:'/chatread/product/ajax',
+				url:'/chatread/chatroom/ajax',
 				type: 'POST',
 				data: JSON.stringify({
 					id: id,
-					buyerId: buyerId
+					flag: flag
 				}),
 				dataType: 'json',
 				contentType: 'application/json'
 			})
-
 		}
-
 	
 	</script>
 </body>
