@@ -15,7 +15,7 @@
 	margin: 0;
 }
 
-.chatMessageInfo {
+div[class^="chatMessageInfo"] {
 	display: flex;
 	flex-direction: row;
 	width: 500px;
@@ -26,13 +26,17 @@
 	position: relative;
 }
 
+.chatListInfo {
+	display: block;
+}
+
 .wrapPr_img {
 	position: absolute;
 	top: 25px;
 	left: 0px;
 }
 
-.wrapSellerTitle {
+div[class^="wrapSellerTitle"]{
 	position: absolute;
 	top: 30px;
 	left: 100px;

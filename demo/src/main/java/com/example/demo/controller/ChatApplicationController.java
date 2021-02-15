@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -119,37 +120,7 @@ public class ChatApplicationController {
 		
 		 Login login = (Login)session.getAttribute("login");
 		 String email = login.getEmail();
-		 
-		 List<ChatList> chatRoomList = chatRoomService.findByEmail(email);		 
-		 List<Integer> unreadChatId = chatRoomService.getUnreadChatRoom(email);
-		 
-		 for (ChatList chatList : chatRoomList) {
-			 	
-			 if (chatList.getBuyerId().equals(email)) {
-				 chatList.setSenderName(chatList.getSellerName());
-			 } else {
-				 chatList.setSenderName(chatList.getBuyerName());				 
-			 }
-			 
-			 System.out.println("chatList senderName: " + chatList.getSenderName());
-			 	
-			 if (unreadChatId.size() == 0) {
-				 chatList.setChatRoomRead(0);
-				} else {
-					 for (int ele : unreadChatId) {
-						 	if (chatList.getId() == ele) {
-						 		System.out.println("unreadChatRoomId: " + ele);
-						 		System.out.println("unreadEle: " + ele);
-						 		chatList.setChatRoomRead(1);
-						 	} else {
-						 		chatList.setChatRoomRead(0);
-						 	}
-				}
-		}
-			 
-			
-		}
-		 model.addAttribute("chatRoomList", chatRoomList);
+		
 		 model.addAttribute("email", email);
 
 		 return "chatList";
@@ -189,9 +160,140 @@ public class ChatApplicationController {
 		
 		String email = (String) jsn.get("email");
 
-    		int messages = chatRoomService.getUnreadMessages(email);
+    	int messages = chatRoomService.getUnreadMessages(email);
 
 		return messages;
+	}
+
+	@RequestMapping(value="/chatUnreadMessage/ajax", method=RequestMethod.POST)
+	@ResponseBody
+	public String chatListUnread(@RequestBody String json) {
+		
+		JSONObject jsn = new JSONObject(json);
+		String email = (String) jsn.get("email");
+		List<ChatList> chatRoomList = chatRoomService.findByEmail(email);		 
+		//int idx = chatRoomList.size();
+		//0: pr_id, 1: buyerId, 2: pr_img_1, 3: senderName, 4: pr_title, 5: messageUnread
+		//String[][] chatLists = new String[idx][6];
+		JSONArray ja = new JSONArray();
+		
+		List<Integer> unreadChatId = chatRoomService.getUnreadChatRoom(email);
+		
+		
+		 
+//		 int i = 0;
+		 
+		 for (ChatList chatList : chatRoomList) {
+			 JSONObject jo = new JSONObject();
+
+			 jo.put("pr_id", chatList.getPr_id());
+			 jo.put("buyerId", chatList.getBuyerId());
+			 jo.put("pr_img_1", chatList.getPr_img_1());
+			 
+//			 chatLists[i][0] = chatList.getPr_id() + "";
+//			 chatLists[i][1] = chatList.getBuyerId();
+//			 chatLists[i][2] = chatList.getPr_img_1();
+			 
+		 	
+		 if (chatList.getBuyerId().equals(email)) {
+			 //chatLists[i][3] = chatList.getSellerName();
+			 jo.put("senderName", chatList.getSellerName());
+		 } else {
+			 jo.put("senderName", chatList.getBuyerName());
+		 }
+		 
+		 jo.put("pr_title", chatList.getPr_title());
+		 
+		 if (unreadChatId.size() == 0) {
+			 jo.put("messageUnread", "");
+		 	} else {
+				 for (int ele : unreadChatId) {
+					 	if (chatList.getId() == ele) {
+					 		System.out.println("unreadChatRoomId: " + ele);
+					 		System.out.println("unreadEle: " + ele);
+					 		jo.put("messageUnread", "새 메세지");
+//					 		chatLists[i][4] = "새 메세지";
+					 	} else {
+					 		jo.put("messageUnread", "");
+//					 		chatLists[i][4] = "";
+					 	}
+				 }
+			}
+		 //i++;	 
+		 	ja.put(jo);
+		}
+//		 String result = ja.toString();
+		 JSONObject jsnResult = new JSONObject();
+		 jsnResult.put("chatList", ja);
+		 String result = jsnResult.toString();
+		 System.out.println("chatResult toString: " + result);
+		
+		 return result;
+	}
+	
+	
+	@RequestMapping(value="/chatList/ajax", method=RequestMethod.POST)
+	@ResponseBody
+	public String chatList(@RequestBody String json) {
+		
+		JSONObject jsn = new JSONObject(json);
+		String email = (String) jsn.get("email");
+		List<ChatList> chatRoomList = chatRoomService.findByEmail(email);		 
+		//int idx = chatRoomList.size();
+		//0: pr_id, 1: buyerId, 2: pr_img_1, 3: senderName, 4: pr_title, 5: messageUnread
+		//String[][] chatLists = new String[idx][6];
+		JSONArray ja = new JSONArray();
+		
+		List<Integer> unreadChatId = chatRoomService.getUnreadChatRoom(email);
+				
+//		 int i = 0;
+		
+		for (ChatList chatList : chatRoomList) {
+			JSONObject jo = new JSONObject();
+			
+			jo.put("pr_id", chatList.getPr_id());
+			jo.put("buyerId", chatList.getBuyerId());
+			jo.put("pr_img_1", chatList.getPr_img_1());
+			
+//			 chatLists[i][0] = chatList.getPr_id() + "";
+//			 chatLists[i][1] = chatList.getBuyerId();
+//			 chatLists[i][2] = chatList.getPr_img_1();
+			
+			
+			if (chatList.getBuyerId().equals(email)) {
+				//chatLists[i][3] = chatList.getSellerName();
+				jo.put("senderName", chatList.getSellerName());
+			} else {
+				jo.put("senderName", chatList.getBuyerName());
+			}
+			
+			jo.put("pr_title", chatList.getPr_title());
+			
+			if (unreadChatId.size() == 0) {
+				jo.put("messageUnread", "");
+			} else {
+				for (int ele : unreadChatId) {
+					if (chatList.getId() == ele) {
+						System.out.println("unreadChatRoomId: " + ele);
+						System.out.println("unreadEle: " + ele);
+						jo.put("messageUnread", "새 메세지");
+//					 		chatLists[i][4] = "새 메세지";
+					} else {
+						jo.put("messageUnread", "");
+//					 		chatLists[i][4] = "";
+					}
+				}
+			}
+			//i++;	 
+			ja.put(jo);
+		}
+//		 String result = ja.toString();
+		JSONObject jsnResult = new JSONObject();
+		jsnResult.put("chatList", ja);
+		String result = jsnResult.toString();
+		System.out.println("chatResult toString: " + result);
+		
+		return result;
 	}
 	
 	

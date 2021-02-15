@@ -113,6 +113,7 @@
 									$(document).ready(function() {
 									
 										if (loginEmail != null) {
+											getUnread();
 											getInfiniteUnread();
 										}
 									});
@@ -140,13 +141,12 @@
 									function getInfiniteUnread() {
 										setInterval(() => {
 											getUnread();
-										}, 500);
+										}, 1000);
 									}
 									
 									function showUnread(result) {
 										$('#messageAlert').html(result);
 									}
-									
 									
 							</script>
 						</div>
