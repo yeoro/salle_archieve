@@ -26,6 +26,7 @@
 		
 		function initialize() {
 			getChatList();
+			getUnreadMessageInfo();
 			unreadAlertInfinite();
 			
 		}
@@ -50,9 +51,8 @@
 			});
 		}
 		
-		 function getUnread() {
+		 function getUnreadMessageInfo() {
 
-			 	console.log("getUnread inprocess");
 				 $.ajax({
 					 url:"/chatUnreadMessage/ajax",
 					 type: "POST",
@@ -62,8 +62,6 @@
 					 contentType: "application/json",
 					 success: function(data) {
 						 var parsed = JSON.parse(data);
-						 console.log("parsedSednerName: " + parsed.chatList[0].senderName);	
-						 console.log("length: " + parsed.chatList.length);
 						 var length = parsed.chatList.length;
 						 
 						 for (var i = 0; i < length; i++) {
@@ -74,13 +72,14 @@
 			 });
 		 }
 	 	
+		 
 	 	function unreadAlertInfinite() {
 	 		setInterval(() => {
-			 	getUnread();				
+	 			getUnreadMessageInfo();				
 			}, 1000);
 	 	}
 	 	
-	 	//0: pr_id, 1: buyerId, 2: pr_img_1, 3: senderName, 4: pr_title, 5: messageUnread
+	 	
 	 	function addChatList(pr_id, buyerId, senderName, pr_title, messageUnread, idx) {
 
 	 		var str =

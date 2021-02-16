@@ -6,6 +6,15 @@
 }
 
 
+.header {
+	padding: 10px 20px;
+	background-color: #f7f7f7;
+}
+
+.header h2 {
+	margin: 0;
+}
+
 div[class^="chatMessageInfo"] {
 	display: flex;
 	flex-direction: row;
