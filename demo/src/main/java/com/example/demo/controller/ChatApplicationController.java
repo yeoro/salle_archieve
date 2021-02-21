@@ -117,11 +117,6 @@ public class ChatApplicationController {
 	
 	@RequestMapping(value="/chatList", method=RequestMethod.GET)
 	public String getChatList(Model model, HttpSession session) {
-		
-		 Login login = (Login)session.getAttribute("login");
-		 String email = login.getEmail();
-		
-		 model.addAttribute("email", email);
 
 		 return "chatList";
 	}
@@ -152,7 +147,7 @@ public class ChatApplicationController {
 	}
 	
 	
-	@RequestMapping(value="/chatUnread/ajax", method=RequestMethod.POST)
+	@RequestMapping(value="/chatUnreadAlert/ajax", method=RequestMethod.POST)
 	@ResponseBody
 	public int chatUnread(@RequestBody String json) {
 		
@@ -163,23 +158,27 @@ public class ChatApplicationController {
 		return messages;
 	}
 
-	@RequestMapping(value="/chatUnreadMessage/ajax", method=RequestMethod.POST)
+	@RequestMapping(value="/chatUnreadMessageInfo/ajax", method=RequestMethod.POST)
 	@ResponseBody
 	public String chatListUnread(@RequestBody String json) {
-		
+		//ajax가 전송한 String을 key, value로 분류하기 위해 JSON Object convert
 		JSONObject jsn = new JSONObject(json);
+		//JSON.get([mapped name])으로 value 추출하기
 		String email = (String) jsn.get("email");
-		List<ChatList> chatRoomList = chatRoomService.findByEmail(email);		 
+		//email에 해당되는 모든 chatRoom select 받기
+		List<ChatList> chatRoomList = chatRoomService.findByEmail(email);
+		//chatRoom 정보는 JSON Array에 저장됨
 		JSONArray ja = new JSONArray();
+		//email에 해당되는 읽지 않은 chatRoom select 받기
 		List<Integer> unreadChatId = chatRoomService.getUnreadChatRoom(email);
 
 		 for (ChatList chatList : chatRoomList) {
-			
+			//chatRoom 정보를 JSON Object에 put 해줌, chatRoom이 반복문에서 넘어갈 때마다 객체 초기화 
 			 JSONObject jo = new JSONObject();
 			 jo.put("pr_id", chatList.getPr_id());
 			 jo.put("buyerId", chatList.getBuyerId());
 			 jo.put("pr_img_1", chatList.getPr_img_1());
-		 	
+		 	//리스트에 출력할 상대방 닉네임 확인
 		 if (chatList.getBuyerId().equals(email)) {
 			 jo.put("senderName", chatList.getSellerName());
 		 } else {
@@ -187,10 +186,11 @@ public class ChatApplicationController {
 		 }
 		 
 		 	 jo.put("pr_title", chatList.getPr_title());
-		 
+		 //읽지 않은 chatRoom이 0개일때
 		 if (unreadChatId.size() == 0) {
 			 jo.put("messageUnread", "");
 		 	} else {
+		 		//읽지 않은 chatRoomId들과 현재 chatRoomId 대조 후 처리 
 				 for (int ele : unreadChatId) {
 					 	if (chatList.getId() == ele) {
 					 		jo.put("messageUnread", "새 메세지");
@@ -202,10 +202,12 @@ public class ChatApplicationController {
 			}
 		 	ja.put(jo);
 		}
+		 //Javascript에 parsing 할 수 있도록 JSON Object에 Array를 담아줌
 		 JSONObject jsnResult = new JSONObject();
 		 jsnResult.put("chatList", ja);
+		 //String으로 변환해주면 끝, 프런트<->백엔드 전달은 String으로 이루어지며 형식은 JSON을 선택했음 
 		 String result = jsnResult.toString();
-		
+		 //View로 result를 return해줌
 		 return result;
 	}
 	
@@ -218,7 +220,6 @@ public class ChatApplicationController {
 		String email = (String) jsn.get("email");
 		List<ChatList> chatRoomList = chatRoomService.findByEmail(email);		 
 		JSONArray ja = new JSONArray();
-		List<Integer> unreadChatId = chatRoomService.getUnreadChatRoom(email);
 
 		 for (ChatList chatList : chatRoomList) {
 			

@@ -121,7 +121,7 @@
 									
 									function getUnread() {
 										$.ajax({
-											url: "/chatUnread/ajax",
+											url: "/chatUnreadAlert/ajax",
 											type: "POST",
 											data: JSON.stringify({
 												email: loginEmail

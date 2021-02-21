@@ -105,7 +105,7 @@ public class ProductInfoController {
 	
 	@RequestMapping(value = "/search/result", method = RequestMethod.GET) 
 	public String searchGet(@RequestParam("searchWord") String searchWord, Model model) {
-		String searchWordNoSpace = searchWord.replaceAll("\s", "");
+		String searchWordNoSpace = searchWord.replaceAll("\\s", "");
 		
 		if (productService.searchCount(searchWord, searchWordNoSpace) == 0) {
 			model.addAttribute("searchWord",searchWord);

@@ -10,12 +10,14 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
 @SpringBootApplication
-public class DemoApplication {
+public class DemoApplication extends SpringBootServletInitializer {
 
 	//SqlSessionFactory 설정
 	//@Bean은 스프링에 필요한 객체를 생성. sqlSessionFactory() : MyBatis의 SqlSessionFactory를 반환해준다. 스프링부트가 실행될 때
@@ -45,10 +47,10 @@ public class DemoApplication {
 		return messageSource;
 	}
 
-//    @Override
-//	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-//		return builder.sources(DemoApplication.class);
-//	}
+    @Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+		return builder.sources(DemoApplication.class);
+	}
 
 
 	public static void main(String[] args) {

@@ -1,35 +1,25 @@
 package com.example.demo.controller;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.example.demo.application.ProductService;
+import com.example.demo.domain.ChatRoom;
 import com.example.demo.domain.Login;
-import com.example.demo.domain.Member;
 import com.example.demo.domain.Product;
 import com.example.demo.domain.UuidImgname;
 import com.example.demo.validation.SellProductValidation;
@@ -66,7 +56,7 @@ public class ProductController {
 	//상품등록완료 페이지
     @RequestMapping(value = "/sell/done", method = RequestMethod.POST)
     public String sellHandle(@ModelAttribute("product") Product product, Errors errors,
-    		HttpSession httpSession) throws Exception {
+    		HttpSession httpSession, Model model) throws Exception {
     	
     	System.out.println("sell done");
     	
@@ -75,7 +65,7 @@ public class ProductController {
     	Login login = (Login) httpSession.getAttribute("login");
     	product.setPr_email(login.getEmail());
     	
-    	product.setPr_title_alias(product.getPr_title().replaceAll("\s", ""));
+    	product.setPr_title_alias(product.getPr_title().replaceAll("\\s", ""));
     	
 		//ajax로 받은 img_file 정보를 넘겨줌 
 		product.setPr_img_1(product_file.getPr_img_1());
@@ -101,6 +91,9 @@ public class ProductController {
 		product_file.setPr_img_4(null);
 		product_file.setPr_img_5(null);
 
+		ChatRoom chatRoom = new ChatRoom();
+		model.addAttribute("chatRoom", chatRoom);
+		
     	return "product/productInfo";
     }
     

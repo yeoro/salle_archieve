@@ -148,7 +148,7 @@ public class ProductEditController {
 		
     	Login login = (Login) httpSession.getAttribute("login");
     	product.setPr_email(login.getEmail());
-    	product.setPr_title_alias(product.getPr_title().replaceAll("\s", ""));
+    	product.setPr_title_alias(product.getPr_title().replaceAll("\\s", ""));
     	
     	//DB pr_img_ 파일이 어디까지 차있는지 봐야함
     	
