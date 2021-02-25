@@ -4,6 +4,10 @@ package com.example.demo;
 
 import java.util.Locale;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.ServletException;
 import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -56,6 +60,22 @@ public class DemoApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) {
     	SpringApplication.run(DemoApplication.class, args);
     }
+
+
+	@Override
+	public void onStartup(ServletContext servletContext) throws ServletException {
+		servletContext.addListener(new ServletContextListener() {
+
+			@Override
+			public void contextDestroyed(ServletContextEvent sce) {
+				org.h2.Driver.unload();
+			}
+		});
+		
+		super.onStartup(servletContext);
+	}
+	
+	
 
 }
 
