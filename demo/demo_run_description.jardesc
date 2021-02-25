@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jardesc>
+    <jar path="demo/demo_run.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/demo/demo_run_description.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" mainClassHandleIdentifier="=demo/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.example.demo{DemoApplication.java[DemoApplication" manifestLocation="/demo/target/classes/META-INF/manifest" manifestVersion="1.0" reuseManifest="false" saveManifest="true" usesManifest="true">
+        <sealing sealJar="true">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=demo/src\/main\/resources=/maven.pomderived=/true=/"/>
+        <file path="/demo/HELP.md"/>
+        <folder path="/demo/WebContent"/>
+        <file path="/demo/.gitignore"/>
+        <folder path="/demo/target"/>
+        <file path="/demo/.project"/>
+        <file path="/demo/mvnw"/>
+        <javaElement handleIdentifier="=demo/label"/>
+        <file path="/demo/pom.xml"/>
+        <folder path="/demo/src"/>
+        <file path="/demo/.classpath"/>
+        <file path="/demo/mvnw.cmd"/>
+        <javaElement handleIdentifier="=demo/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/"/>
+        <file path="/demo/.tern-project"/>
+    </selectedElements>
+</jardesc>
